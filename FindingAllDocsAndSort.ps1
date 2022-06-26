@@ -1,14 +1,14 @@
 ﻿#Arrays and Filters for file types
-$PDFfile = Get-Childitem C:\ -recurse -filter "*.pdf" 
+$PDFfile = Get-Childitem C:\Users\ -recurse -filter "*.pdf" 
 $PDFarray = New-Object System.Collections.ArrayList
 
-$WORDfile = Get-Childitem C:\ -recurse -filter '*.doc*' 
+$WORDfile = Get-Childitem C:\Users\ -recurse -filter '*.doc*' 
 $WORDarray = New-Object System.Collections.ArrayList
 
-$POWERPOINTfile = Get-Childitem C:\ -recurse -filter '*.ppt*'
+$POWERPOINTfile = Get-Childitem C:\Users\ -recurse -filter '*.ppt*'
 $POWERPOINTarray = New-Object System.Collections.ArrayList
 
-$EXCELfile = Get-Childitem C:\ -recurse -filter '*.xls*'
+$EXCELfile = Get-Childitem C:\Users\ -recurse -filter '*.xls*'
 $EXCELarray = New-Object System.Collections.ArrayList
 
 #making directories for files 
