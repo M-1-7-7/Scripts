@@ -1,4 +1,4 @@
-﻿cd C:\Users\User\Desktop\output\all_word_docs
+cd C:\Users\User\Desktop\output\all_word_docs
 $unzipedArray = New-Object System.Collections.ArrayList
 #turn word documents into zip documents
 Dir *.doc* | rename-item -newname { [io.path]::ChangeExtension($_.name, "zip") }
@@ -18,8 +18,8 @@ foreach ($i in $unzipedArray)
     cd C:\Users\User\Desktop\output\all_word_docs
     $directoy = $i + '\word\document.xml' 
     $a = Get-Content -path $directoy
-    #if ($a -like "*Protected*" -or $a -like "*Secrete*" -or $a -like "*Protected*" -or $a -like "*agao*"){
-    if ($a -like "*a*")
+   
+    if ($a -like "*string1*" -or $a -like "*string2*" )
     {
        $DestinationLocation =  'C:\Users\User\Desktop\output\docs_of_interest'
        $file = $i + ".zip"
