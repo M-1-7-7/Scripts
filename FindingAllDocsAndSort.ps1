@@ -11,39 +11,32 @@ $POWERPOINTarray = New-Object System.Collections.ArrayList
 $EXCELfile = Get-Childitem C:\Users\ -recurse -filter '*.xls*'
 $EXCELarray = New-Object System.Collections.ArrayList
 
-#making directories for files 
-#replace "User" with the name of the user you want to work in
-mkdir C:\Users\User\Desktop\output
-New-Item  C:\Users\User\Desktop\output\NotAcceptedPdfName.txt
-mkdir C:\Users\User\Desktop\output\all_pdf_docs
-New-Item C:\Users\User\Desktop\output\NotAcceptedWord.txt
-mkdir C:\Users\User\Desktop\output\all_word_docs
-New-Item C:\Users\User\Desktop\output\NotAcceptedPowerpoint.txt
-mkdir  C:\Users\User\Desktop\output\all_powerpoint_docs
-New-Item  C:\Users\User\Desktop\output\NotAcceptedExcel.txt
-mkdir  C:\Users\User\Desktop\output\all_excel_docs
-
-mkdir  C:\Users\User\Desktop\output\docs_of_interest
+mkdir C:\Users\User\Desktop\Output | Out-Null
+New-Item  C:\Users\User\Desktop\Output\NotAcceptedPdfName.txt| Out-Null
+mkdir C:\Users\User\Desktop\Output\all_pdf_docs| Out-Null
+New-Item C:\Users\User\Desktop\Output\NotAcceptedWord.txt| Out-Null
+mkdir C:\Users\User\Desktop\Output\all_word_docs| Out-Null
+New-Item C:\Users\User\Desktop\Output\NotAcceptedPowerpoint.txt| Out-Null
+mkdir  C:\Users\User\Desktop\Output\all_powerpoint_docs| Out-Null
+New-Item  C:\Users\User\Desktop\Output\NotAcceptedExcel.txt| Out-Null
+mkdir  C:\Users\User\Desktop\Output\all_excel_docs| Out-Null
+mkdir C:\Users\User\Desktop\Output\positive_results | Out-Null
 
 #Loop to sort PDFs
 foreach ($PDFitem in $PDFfile)
 {
     $PDFarray.Add([pscustomobject]@{
-        "Path" = $PDFitem.FullName}) |Out-Null
-
+        #ADD FILE PROPERTIES HERE TO DISPLAY MORE
+        "Path" = $PDFitem.FullName}) | Out-Null
 }
-
 
 Foreach ($PDFstring in $PDFarray)
 {
     if ($PDFstring -like "*``]*" -or $PDFstring -like "*``[*" ){
-        $PDFstring
-        Write-Host "TRUE"
-        
-        Add-Content C:\Users\User\Desktop\output\NotAcceptedPdfName.txt $PDFstring.Path
+        Add-Content C:\Users\User\Desktop\Output\NotAcceptedPdfName.txt $PDFstring.Path
     }
     else{
-        Copy-Item -Path $PDFfile.FullName -Destination C:\Users\User\Desktop\output\all_pdf_docs
+        Copy-Item -Path $PDFfile.FullName -Destination C:\Users\User\Desktop\Output\all_pdf_docs
     }
 }
 
@@ -65,7 +58,7 @@ Foreach ($WORDstring in $WORDfile)
     }
     else{
         
-        Copy-Item -Path $WORDfile.FullName -Destination C:\Users\User\Desktop\output\all_word_docs
+        Copy-Item -Path $WORDfile.FullName -Destination C:\Users\User\Desktop\Output\all_word_docs
     }
 }
 
@@ -74,40 +67,33 @@ foreach ($POWERPOINTitem in $POWERPOINTfile)
 {
     $POWERPOINTarray.Add([pscustomobject]@{
         "Path" = $POWERPOINTitem.FullName}) |Out-Null
-
 }
 
 Foreach ($POWERPOINTstring in $POWERPOINTfile)
 {
-    if ($POWERPOINTstring -like "*``]*" -or $POWERPOINTstring -like "*``[*" ){
-        $POWERPOINTstring
-        Write-Host "TRUE"
-        
+    if ($POWERPOINTstring -like "*``]*" -or $POWERPOINTstring -like "*``[*" ){    
         Add-Content C:\Users\User\Desktop\output\NotAcceptedPowerpoint.txt $string.Path
     }
     else{
         
-        Copy-Item -Path $POWERPOINTfile.FullName -Destination C:\Users\User\Desktop\output\all_powerpoint_docs
+        Copy-Item -Path $POWERPOINTfile.FullName -Destination C:\Users\User\Desktop\Output\all_powerpoint_docs
     }
 }
 
+#
 #Loop to sort Excel
 foreach ($EXCELitem in $EXCELfile)
 {
     $EXCELarray.Add([pscustomobject]@{
         "Path" = $EXCELitem.FullName}) |Out-Null
-
 }
 
 Foreach ($EXCELstring in $EXCELfile)
 {
     if ($EXCELstring -like "*``]*" -or $EXCELstring -like "*``[*" ){
-        $EXCELstring
-        Write-Host "TRUE"
-        
         Add-Content C:\Users\User\Desktop\output\NotAcceptedExcel.txt $string.Path
     }
     else{
-        Copy-Item -Path $EXCELfile.FullName -Destination C:\Users\User\Desktop\output\all_excel_docs
+        Copy-Item -Path $EXCELfile.FullName -Destination C:\Users\User\Desktop\Output\all_excel_docs
     }
 }

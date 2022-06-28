@@ -1,0 +1,4 @@
+############
+Copy a file from Source to Target over SSH on Port
+############
+scp -P 22 canvas@192.168.122.1:/home/canvas/Documents/ShareFolder/Lost.txt C:\Users\canvas\Desktop

@@ -1,32 +1,20 @@
-cd C:\Users\User\Desktop\output\all_word_docs
-$unzipedArray = New-Object System.Collections.ArrayList
-#turn word documents into zip documents
-Dir *.doc* | rename-item -newname { [io.path]::ChangeExtension($_.name, "zip") }
-#unzip documents
-Get-ChildItem C:\Users\User\Desktop\output\all_word_docs -Filter *.zip | foreach {
-    $destination = Join-Path $_.DirectoryName ($_.BaseName)
+﻿# Move to all_word_Docs Directory
+cd C:\Users\User\Desktop\Output\all_word_docs
+
+# Return all .doc files and then modify extention to .zip
+Dir *.doc* | Rename-Item -NewName { [io.path]::ChangeExtension($_.name, "zip") }
+
+# Unzip any zip files
+Get-ChildItem C:\Users\User\Desktop\Output\all_word_docs -Filter *.zip | foreach {
+    $destination = Join-Path $_.DirectoryName ("Unziped - " + $_.BaseName)
     Expand-Archive $_.FullName -DestinationPath $destination
-    $unzipedArray.Add($destination) | out null
 }
 
-#identify all unziped folders and put fullname into array
-
-#loop through array and into the "word\document.xml" file
-
-foreach ($i in $unzipedArray)
-{
-    cd C:\Users\User\Desktop\output\all_word_docs
-    $directoy = $i + '\word\document.xml' 
-    $a = Get-Content -path $directoy
-   
-    if ($a -like "*string1*" -or $a -like "*string2*" )
-    {
-       $DestinationLocation =  'C:\Users\User\Desktop\output\docs_of_interest'
-       $file = $i + ".zip"
-       $file
-       Write-Host "accpting"   
-       Copy-Item -path $file -Destination $DestinationLocation -Recurse
-    }
-    cd C:\Users\User\Desktop\output\docs_of_interest
-    Dir *.zip* | rename-item -newname { [io.path]::ChangeExtension($_.name, "docx") }
+# Check for classification keywords
+$a = Get-content -Path "C:\Users\User\Desktop\Output\all_powerpoint_docs\Unziped - Test_1\ppt\slides\slide1.xml"
+if ($a -like "*Something*"){
+    Write-Host "True"
+}
+else {
+    Write-Host "False"
 }

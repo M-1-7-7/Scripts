@@ -1,0 +1,15 @@
+#######
+# Recursive search through a given directory location on a given file extentions.
+#######
+Get-ChildItem "C:" -Recurse -Include *.txt, *.doc, *.docx, *.ppt, *.pptx, *.pdf, *.jpg, *.jpeg, *.* | Export-Csv .\test_result.csv
+#######
+# Get contents based on objects "field name" from a csv file.
+#######
+Import-Csv C:\Users\User\test_result.csv | ForEach-Object {$Names += $_.PSPath}
+#######
+
+logic for script:
+$file_types = read-host -prompt 'input your file type to extract (.pdf .pxt .xml ...): '
+$Files
+if $Names == *.$filetypes
+	Import-Csv C:\Users\User\test_result.csv | ForEach-Object {$Files += $PSChildName}
