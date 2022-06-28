@@ -2,7 +2,7 @@
 cd C:\Users\User\Desktop\output\all_powerpoint_docs
 
 # New Array Names of our new zip files
-$unzipped_array = New-Object System.Collections.ArrayList
+$ppt_array = New-Object System.Collections.ArrayList
 
 # Return all .ppt files and then modify extention to .zip
 Dir *.ppt* | rename-item -newname { [io.path]::ChangeExtension($_.name, "zip") }
@@ -11,11 +11,13 @@ Dir *.ppt* | rename-item -newname { [io.path]::ChangeExtension($_.name, "zip") }
 Get-ChildItem C:\Users\User\Desktop\Output\all_powerpoint_docs -Filter *.zip | foreach {
     $destination = Join-Path $_.DirectoryName ("Unziped - " + $_.BaseName)
     Expand-Archive $_.FullName -DestinationPath $destination
-    $unzipped_array.Add($destination) | Out-Null
+    $ppt_array.Add($destination) | Out-Null
 }
 
+<#
+# Identify all unziped folders and put fullname into array
+# Loop through array and into the "\ppt\slides\slide1.xml" file
 # Check for classification keywords
-$unzipped_array
 
 foreach ($i in $unzipped_array){
     $directory = $i + '\ppt\slides\slide1.xml'
@@ -32,3 +34,4 @@ foreach ($i in $unzipped_array){
     cd "C:\Users\User\Desktop\Output\positive_results"
     Dir *.zip* | rename-item -newname { [io.path]::ChangeExtension($_.name, "pptx") }
 }
+#>
