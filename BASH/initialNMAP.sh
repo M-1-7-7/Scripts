@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#usage:
+# ./initialNMAP.sh <ip address>
+
 ip=$1
 
 #nmap scan to identify all open port
