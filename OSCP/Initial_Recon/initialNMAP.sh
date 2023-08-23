@@ -27,7 +27,7 @@ sudo nmap -sUT -p $(cat portList.txt) -sVC -Pn $ip -o sVC_Port_Scan.txt
 #Begin Feroxbuster Scan | this will run in background, output can be read from the output file
 cd $scriptDir
 echo $scriptDir
-./webEnum.sh $ip 
+./web_enum.sh $ip 
 
 
 
