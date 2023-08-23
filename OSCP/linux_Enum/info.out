@@ -1,0 +1,65 @@
+
+====== User and System Info ======
+
+
+***user:
+m177
+
+
+***host name:
+
+
+***group information:
+uid=1000(m177) gid=1000(m177) groups=1000(m177),4(adm),20(dialout),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),100(users),106(netdev),117(wireshark),120(bluetooth),129(scanner),140(kaboxer)
+
+
+***sudo commands:
+Matching Defaults entries for m177 on kali:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin, use_pty
+
+User m177 may run the following commands on kali:
+    (ALL : ALL) ALL
+
+
+***system/kernal versions: 
+
+Linux kali 6.3.0-kali1-arm64 #1 SMP Debian 6.3.7-1kali1 (2023-06-29) aarch64 GNU/Linux
+
+====== SUID GUID Info ======
+
+
+***SUID Bits:
+-rwsr-xr-x 1 root root 68440 Aug 26  2022 /usr/sbin/mount.cifs
+-rwsr-xr-- 1 root dip 407240 May 13  2022 /usr/sbin/pppd
+-rwsr-xr-x 1 root root 199472 Aug  1 09:10 /usr/sbin/mount.nfs
+-rwsr-xr-x 1 root root 199472 Mar 23 05:33 /usr/bin/ntfs-3g
+-rwsr-xr-x 1 root root 67744 Apr 18 17:07 /usr/bin/fusermount3
+-rwsr-xr-- 1 root kismet 199304 Apr 21 23:01 /usr/bin/kismet_cap_rz_killerbee
+-rwsr-xr-x 1 root root 67744 Jul 24 09:10 /usr/bin/umount
+-rwsr-xr-x 1 root root 68016 Jul 11 07:22 /usr/bin/vmware-user-suid-wrapper
+-rwsr-xr-- 1 root kismet 199304 Apr 21 23:01 /usr/bin/kismet_cap_ti_cc_2540
+-rwsr-xr-x 1 root root 70616 Mar 23 07:41 /usr/bin/chfn
+-rwsr-xr-- 1 root kismet 199304 Apr 21 23:01 /usr/bin/kismet_cap_nrf_52840
+-rwsr-xr-- 1 root kismet 199304 Apr 21 23:01 /usr/bin/kismet_cap_nrf_mousejack
+-rwsr-xr-x 1 root root 67656 Aug  8 11:16 /usr/bin/pkexec
+-rwsr-xr-x 1 root root 335104 Jul 19 18:31 /usr/bin/sudo
+-rwsr-xr-- 1 root kismet 199304 Apr 21 23:01 /usr/bin/kismet_cap_ti_cc_2531
+-rwsr-xr-x 1 root root 69176 Mar 23 07:41 /usr/bin/newgrp
+-rwsr-xr-x 1 root root 69064 Mar 23 07:41 /usr/bin/chsh
+-rwsr-xr-- 1 root kismet 199304 Apr 21 23:01 /usr/bin/kismet_cap_nrf_51822
+-rwsr-xr-- 1 root kismet 199304 Apr 21 23:01 /usr/bin/kismet_cap_nxp_kw41z
+-rwsr-xr-- 1 root kismet 199304 Apr 21 23:01 /usr/bin/kismet_cap_linux_bluetooth
+-rwsr-xr-- 1 root kismet 199304 Apr 21 23:01 /usr/bin/kismet_cap_ubertooth_one
+-rwsr-xr-- 1 root kismet 207992 Apr 21 23:01 /usr/bin/kismet_cap_linux_wifi
+-rwsr-xr-x 1 root root 133312 Jul 24 09:10 /usr/bin/su
+-rwsr-xr-x 1 root root 72048 Mar 23 07:41 /usr/bin/passwd
+-rwsr-xr-x 1 root root 137352 Mar 23 07:41 /usr/bin/gpasswd
+-rwsr-xr-x 1 root root 67744 Jul 24 09:10 /usr/bin/mount
+-rwsr-xr-x 1 root root 67664 Aug  8 11:16 /usr/lib/polkit-1/polkit-agent-helper-1
+-rwsr-xr-x 1 root root 723472 Jul 19 17:49 /usr/lib/openssh/ssh-keysign
+-rwsr-sr-x 1 root root 67800 May  2 21:41 /usr/lib/xorg/Xorg.wrap
+-rwsr-xr-- 1 root messagebus 67504 Jul 11 13:38 /usr/lib/dbus-1.0/dbus-daemon-launch-helper
+
+
+***GUID Bits:
+-rwsr-sr-x 1 root root 67800 May  2 21:41 /usr/lib/xorg/Xorg.wrap
