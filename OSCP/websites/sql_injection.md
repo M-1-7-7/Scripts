@@ -115,7 +115,7 @@ if the MySQL Version is < 5 (i.e 4.1.33, 4.1.12...)
 
 2. test the vulnerability we had to use
 
-	a. `http://www.website.com/articles.php?id=3 and 1=1 ( we havn't any error and the page loads normally)
+	a. `http://www.website.com/articles.php?id=3 and 1=1 ( we havn't any error and the page loads normally)`
 
 3. and now
 
