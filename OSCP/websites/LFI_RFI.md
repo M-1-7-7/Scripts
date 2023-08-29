@@ -1,7 +1,9 @@
 # Initial inspection
 
 1. Does the URL have a `?page=<whatever>` at the end?
+   
    a. Yes then continue
+
    b. No then stop
 
 # attempt LFI firstly
