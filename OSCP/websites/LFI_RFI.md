@@ -18,5 +18,9 @@
 
    d. If this didnt work, move on to RFI
 
-3. Get users that have shells
+3. Get users that have home directories
+
+   a. Good starting point is look for `.ssh/id.rsa` file in attempt to get ssh access
+
+   
 
