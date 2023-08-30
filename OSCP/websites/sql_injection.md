@@ -23,7 +23,7 @@ it's in the form of executing some querys in the database and getting acces to i
 
 # certainly before doing anything we have to find the number of columns
 
-**Finding the number of columns:
+**Finding the number of columns:**
 
 1. for finding the number of columns we use `ORDER BY` to order result in the database
 
@@ -51,7 +51,7 @@ it's in the form of executing some querys in the database and getting acces to i
 
 # Checking UNION function :
 
-**for using UNION function we select more informations from the database in one statement
+**for using UNION function we select more informations from the database in one statement**
 
 1. so we try this
 
@@ -81,7 +81,7 @@ we say in example that this number is 3
 
 # Getting tables and columns names :
 
-**here we have a job to do!!
+**here we have a job to do!!**
 if the MySQL Version is < 5 (i.e 4.1.33, 4.1.12...)
 
 1. lets see that the table admin exist!
