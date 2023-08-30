@@ -30,7 +30,7 @@
 
    b. use website to call back to nc listener `<url>/?page=http://<kali ip>:<port>/`
 
-   c. examine nc output
+2. . examine nc output
 
          i. if the request looks like `GET / HTTP/1.0` then the webpage is not looking for any file type inparticulat
 
