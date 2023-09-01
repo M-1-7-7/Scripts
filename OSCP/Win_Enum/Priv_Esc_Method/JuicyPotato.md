@@ -1,4 +1,5 @@
 # Juicy Potato Priv Esc
+Download the exe from here: `https://github.com/ohpe/juicy-potato/releases/tag/v0.1`
 
 1. **Execute JuicyPotato.exe to see if default CLSID will work:**
 
