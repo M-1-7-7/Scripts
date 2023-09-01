@@ -32,4 +32,4 @@
 ```
 - ***Execution:***
 
-1. Once payload is in position, and any other listeners are set up, execut `Restart-Computer` to restart the computer and either created a new admin or got an admin shell.
+1. Once payload is in position, and any other listeners are set up, execute `Restart-Computer` to restart the computer and either created a new admin or got an admin shell.
