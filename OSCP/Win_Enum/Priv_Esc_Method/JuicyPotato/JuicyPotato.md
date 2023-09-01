@@ -1,6 +1,6 @@
 # Juicy Potato Priv Esc
 Download the exe from here: `https://github.com/ohpe/juicy-potato/releases/tag/v0.1`
-
+Suporting files are located at: `Scripts/OSCP/Win_Enum/Priv_Esc_Method/JuicyPotato/`
 1. **Execute JuicyPotato.exe to see if default CLSID will work:**
 
 a. Calling back using nc reverse shell:
@@ -11,8 +11,8 @@ b. Calling back using powershell reverse shell:
 
  2. **Default CLSID Not Working:**
 
-  a. If Default Doesnt run, use the `GetCLSID.ps1` and `join-object.ps1` scripts from `Scripts/OSCP/Win_Enum/Priv_Esc_Method`
-
+  a. If Default Doesnt run, use the `GetCLSID.ps1` and `join-object.ps1` 
+  
    - Load `join-object.ps1` into the powershell session using:
      `import-module join-object.ps1`
     
