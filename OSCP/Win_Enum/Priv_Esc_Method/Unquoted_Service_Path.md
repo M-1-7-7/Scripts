@@ -2,7 +2,7 @@
 
 ### Identify a writable directory where the target file is located
 
-- If the target file is located in `C:\Program Files\cater\cater_term.exe` we should see if the following a writable:
+- ***If the target file is located in `C:\Program Files\cater\cater_term.exe` we should see if the following a writable:***
 
 1. `C:\`, if this is writable we would name the payload `Program.exe`
 2. `C:\Program\`, if this is writable we would name the payload `Files.exe`
