@@ -10,7 +10,7 @@
 
  2. Default CLSID Not working:
 
- a. If Default Doesnt run, use the `GetCLSID.ps1` and `join-object.ps1` scripts from `Scripts/OSCP/Win_Enum/Priv_Esc_Method`
+  a. If Default Doesnt run, use the `GetCLSID.ps1` and `join-object.ps1` scripts from `Scripts/OSCP/Win_Enum/Priv_Esc_Method`
 
    - Load `join-object.ps1` into the powershell session using:
      `import-module join-object.ps1`
@@ -18,11 +18,11 @@
    - Execute `GetCLSID.ps1` using:
      `.\GetCLSID.ps1`
 
- b. download the `test_clsid.bat` and configure the following before execution:
+  b. download the `test_clsid.bat` and configure the following before execution:
    - Change the path to the `CLSID.list` variable
      
    - execute the .bat file
      
    - when the port number changes, it signifies a working CLSID
 
- c. Test CLSID with JuicyPotato command. 
+  c. Test CLSID with JuicyPotato command. 
