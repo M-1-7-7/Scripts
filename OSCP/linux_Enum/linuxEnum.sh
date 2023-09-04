@@ -2,10 +2,6 @@
 
 # move this entire folder into a readable/writable and executable directory on  the target machine prior to comencing 
 
-# execute linpeas and output to a file to read later
-chmod +x linpeas.sh
-./linpeas.sh > linpeas.out
-
 # execute the following commands for recon 
 
 #System and User overview
@@ -48,3 +44,7 @@ echo "Look through the following directory for any cron jobs that may be of inte
 #echo -e "\n====== Config Files ======\n" >> info.out
 #find / ! -path "*/proc/*" -iname "*config*" -type f 2>/dev/null >> info.out
 
+
+# execute linpeas and output to a file to read later
+chmod +x linpeas.sh
+./linpeas.sh > linpeas.out
