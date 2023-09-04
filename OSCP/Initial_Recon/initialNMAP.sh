@@ -24,6 +24,9 @@ awk '{print $1}' ports.txt | paste -s -d, - > portList.txt
 echo -e "\n===== Begining Nmap Service Scan =====\n"
 sudo nmap -sUT -p $(cat portList.txt) -sVC -Pn $ip --open -o sVC_Port_Scan.txt
 
+#open ports for report 
+cat sVC_Port_Scan.txt | grep "PORT\|open" > ports_for_report.txt
+
 #Begin Feroxbuster Scan | this will run in background, output can be read from the output file
 cd $scriptDir
 echo $scriptDir
