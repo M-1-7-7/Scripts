@@ -9,5 +9,5 @@ cat ../nmapScans/sVC_Port_Scan.txt | grep "/tcp\|/udp" | grep "https" | cut -d "
 
 cat httpPorts.txt | while read line; 
 do
-	feroxbuster -C 404,500,403 -d 3 -u http://$ip:$line/ -w "/usr/share/wordlists/dirbuster/directory-list-1.0.txt" -x html,pdf,php,asp,htaccess,json,docx,xml -o ferox_port_$line.txt
+	feroxbuster -C 404,500,403 -d 3 -u http://$ip:$line/ -w "/usr/share/seclists/Discovery/Web-Content/combined_words.txt" -x html,pdf,php,asp,htaccess,json,docx,xml -o ferox_port_$line.txt
 done;
