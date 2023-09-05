@@ -3,16 +3,16 @@
 ### SMB
 
 1. `impacket-smbclient [[domain/]username[:password]@]<targetName or address> `
-2. hashes are also accepted
+2. hashes are also accepted `-hashes`
 
-### RPC
+### RPC / WinRM
 
-
-### WinRM
-
+1. `evil-winrm -i IP -u USER`
+2. hashes are also accepted `-H`
 
 ### RDP (remote desktop)
 
+1. `xfreerdp /u:<user> /p:<pass> /v:<server>`
 
 ### SSH (setting up keys)
 
