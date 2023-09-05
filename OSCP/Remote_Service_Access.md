@@ -20,3 +20,7 @@
 ### SSH (setting up keys)
 
 
+### psexec
+
+1. if SMB share is writable and RPC are open then psexec could be the method of authentication 
+2. `impacket-psexec [[domain/]username[:password]@]<targetName or address>`
