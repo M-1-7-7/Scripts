@@ -3,17 +3,17 @@
 ### SMB
 
 1. `impacket-smbclient [[domain/]username[:password]@]<targetName or address> `
-2. hashes are also accepted `-hashes`
+- hashes are also accepted `-hashes`
 
 ### RPC / WinRM
 
 1. `evil-winrm -i IP -u USER`
-2. hashes are also accepted `-H`
+- hashes are also accepted `-H`
 
 ### RDP (remote desktop)
 
 1. `xfreerdp /u:<user> /p:<pass> /v:<server>`
-2. can set hight of screen with `/h:<pixels>`
+- can set hight of screen with `/h:<pixels>`
 
 3. `Rdesktop <target IP>`
    
@@ -23,4 +23,4 @@
 ### psexec
 
 1. if SMB share is writable and RPC are open then psexec could be the method of authentication 
-2. `impacket-psexec [[domain/]username[:password]@]<targetName or address>`
+- `impacket-psexec [[domain/]username[:password]@]<targetName or address>`
