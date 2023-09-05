@@ -13,7 +13,10 @@
 ### RDP (remote desktop)
 
 1. `xfreerdp /u:<user> /p:<pass> /v:<server>`
+2. can set hight of screen with `/h:<pixels>`
 
+3. `Rdesktop <target IP>`
+   
 ### SSH (setting up keys)
 
 
