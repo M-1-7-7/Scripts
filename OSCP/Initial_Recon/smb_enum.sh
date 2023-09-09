@@ -3,7 +3,9 @@
 # SMB enum scan
 
 ip=$1
-
+cd $ip
+ 
+mkdir SMB_Enum && cd SMB_Enum
 #run nmap smb enum scan
 nmap $ip --script=smb-enum* -p 445 -vvv -o smb_enum.out
 
