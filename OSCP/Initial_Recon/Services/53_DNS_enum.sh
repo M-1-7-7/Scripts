@@ -1,6 +1,4 @@
 # DNS enumeration 
-
-
 ip=$1
 DNS=$2 
 
@@ -18,7 +16,6 @@ dig axfr @$ip $DNS >> DNS_Zone_Transfers.out#Try zone transfer guessing the doma
 fierce --domain $DNS --dns-servers $ip >> DNS_Zone_Transfers.out#Will try toperform a zone transfer against every authoritative name server and if this doesn'twork, will launch a dictionary attack
 
 # DNS Regular commands
-
 echo("DNS Request: ")
 dig A @$ip $DNS > DNS_Generic.out  #Regular DNS request
 
