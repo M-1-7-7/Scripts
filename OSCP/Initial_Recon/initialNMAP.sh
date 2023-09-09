@@ -2,7 +2,7 @@
 
 #Argument Supplied Check
 display_usage() { 
-	echo -e "\nUsage: $0 <IP Address> <Domain> <User Name Wordlist>\n" 
+	echo -e "\nUsage: $0 <IP Address>\n" 
 	} 
 # if less than 3 arguments supplied, display usage 
 if [  $# -le 0 ] 
