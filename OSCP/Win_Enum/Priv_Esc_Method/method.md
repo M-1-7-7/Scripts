@@ -59,4 +59,16 @@
    - [ ] Is there any known service binary that tries to load any non-existant DLL?
    - [ ] Can you write in any binaries folder?
   
-8. Windows Credentials 
+8. Windows Credentials:
+   - [ ] [Winlogon](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#winlogon-credentials) Credentials
+   - [ ] [Windows Vault](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#credentials-manager-windows-vault) that could be used
+   - [ ] [DPAPI credentials](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#dpapi) that are interesting
+   - [ ] [Wifi Network](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#wifi) credentials
+   - [ ] [saved **RDP** Credentials](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#saved-rdp-connections)
+   - [ ] Password in [Recently Run Commands](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#recently-run-commands)
+   - [ ] [RDP Credential Manager](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#remote-desktop-credential-manager) passwords
+   - [ ] if [**AppCmd.exe** exists](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#appcmd-exe) there may be credentials
+   - [ ] [SCClient.exe](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#scclient-sccm) for DLL side loading
+  
+9. [Files and Registry Credentials](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#files-and-registry-credentials)
+   
