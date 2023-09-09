@@ -1,4 +1,24 @@
 # DNS enumeration 
+
+#Argument Supplied Check
+display_usage() { 
+	echo -e "\nUsage: $0 <IP Address> <Domain> <User Name Wordlist>\n" 
+	} 
+# if less than 3 arguments supplied, display usage 
+if [  $# -le 1 ] 
+then 
+	display_usage
+	exit 1
+fi 
+ 
+# check whether user had supplied -h or --help . If yes display usage 
+if [[ ( $@ == "--help") ||  $@ == "-h" ]] 
+then 
+	display_usage
+	exit 0
+fi 
+
+# Variable Assignment
 ip=$1
 DNS=$2 
 
@@ -6,11 +26,9 @@ cd $ip
 mkdir DNS_Enum && cd DNS_Enum
 
 #This command will find any records the server wants to show
-
 dig any $DNS @$ip > DNS_Full_Records.out
 
 # Zone transfers
-
 dig axfr @$ip > DNS_Zone_Transfers.out#Try zone transfer without domain
 dig axfr @$ip $DNS >> DNS_Zone_Transfers.out#Try zone transfer guessing the domain
 fierce --domain $DNS --dns-servers $ip >> DNS_Zone_Transfers.out#Will try toperform a zone transfer against every authoritative name server and if this doesn'twork, will launch a dictionary attack
