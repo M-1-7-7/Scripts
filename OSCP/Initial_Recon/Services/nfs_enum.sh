@@ -1,7 +1,26 @@
 #!/bin/bash
 
-# NFS enum scan
+#Argument Supplied Check
+display_usage() { 
+	echo -e "\nUsage: $0 <IP Address>\n" 
+	} 
+# if less than 3 arguments supplied, display usage 
+if [  $# -le 0 ] 
+then 
+	display_usage
+	exit 1
+fi 
+ 
+# check whether user had supplied -h or --help . If yes display usage 
+if [[ ( $@ == "--help") ||  $@ == "-h" ]] 
+then 
+	display_usage
+	exit 0
+fi 
 
+# Variable Assignment
+
+# NFS enum scan
 ip=$1
 cd $ip
 mkdir NFS_Enum && cd NFS_Enum
