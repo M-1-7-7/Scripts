@@ -15,6 +15,6 @@
    - [ ] [**AllwaysIOnstallElevated** Vulnerbility](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#alwaysinstallelevated)
 
 2. Logging/AV enumeration:
-   - [ ] Check Audit and WEF settings
-   - [ ] Check LAPS
+   - [ ] Check [Audit](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#audit-settings) and [WEF](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#wef) settings
+   - [ ] Check [LAPS](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#laps)
    - [ ] 
