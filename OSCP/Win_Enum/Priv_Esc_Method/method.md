@@ -17,4 +17,18 @@
 2. Logging/AV enumeration:
    - [ ] Check [Audit](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#audit-settings) and [WEF](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#wef) settings
    - [ ] Check [LAPS](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#laps)
-   - [ ] 
+   - [ ] Check if [**WDigest**](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#wdigest) is active
+   - [ ] [LSA Protection](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#lsa-protection)
+   - [ ] [Credentials Guard](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#credentials-guard)
+   - [ ] [Cached Credentials](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#cached-credentials)
+   - [ ] [Check for [**AV**](https://github.com/carlospolop/hacktricks/blob/master/windows-hardening/windows-av-bypass/README.md)
+   - [ ] [**Applocker** Policy](https://github.com/carlospolop/hacktricks/blob/master/windows-hardening/authentication-credentials-uac-and-efs/README.md#applocker-policy)
+   - [ ] [**UAC**](https://github.com/carlospolop/hacktricks/blob/master/windows-hardening/authentication-credentials-uac-and-efs/uac-user-account-control/README.md)
+   - [ ] [**User Priv**](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#users-and-groups)
+      - [ ] [Current User Privilages](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#users-and-groups)
+      - [ ] Current group privilages
+      - [ ] User Sessions
+      - [ ] users homes (access)
+      - [ ] Password Policy
+      - [ ] what is in the clipboard
+   
