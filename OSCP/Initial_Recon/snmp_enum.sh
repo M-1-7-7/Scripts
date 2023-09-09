@@ -5,11 +5,11 @@
 # # Finally comment the line saying "mibs :" in /etc/snmp/snmp.conf
 # sudo vi /etc/snmp/snmp.conf
 #
-#
-#
+
 
 ip=$1
-
+cd $ip
+mkdir SNMP_Enum && cd SNMP_Enum
 #set up files for onesixtyone
 echo public > community
 echo private >> community
