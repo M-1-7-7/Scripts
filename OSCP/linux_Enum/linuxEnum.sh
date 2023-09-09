@@ -40,9 +40,9 @@ cat /var/log/cron.log >> info.out
 echo -e "\n\n***Cron Jobs Directory:" >> info.out
 echo "Look through the following directory for any cron jobs that may be of interest: /etc/cron..">> info.out
 
-# Credential hunting through config files (enable wisely as there can be alot of results
-#echo -e "\n====== Config Files ======\n" >> info.out
-#find / ! -path "*/proc/*" -iname "*config*" -type f 2>/dev/null >> info.out
+# Credential hunting through config files (enable wisely as there can be alot of results)
+echo -e "\n====== Config Files ======\n" > config_files.out
+find / ! -path "*/proc/*" -iname "*config*" -type f 2>/dev/null >> config_files.out
 
 
 # execute linpeas and output to a file to read later
