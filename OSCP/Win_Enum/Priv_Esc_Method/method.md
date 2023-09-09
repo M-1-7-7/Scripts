@@ -2,7 +2,7 @@
 
 **Run Linpeas for best results**
 
-1. System Info:
+1. [System Info: ](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#system-info)
    - [ ] Obtain System Info
    - [ ] Search for [**Kernal exploits**](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#version-exploits)
    - [ ] Use **Google** to search for **Kernal** exploitsUse Google to search for kernel exploits
@@ -14,7 +14,7 @@
    - [ ] [**WSUS exploit**](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#wsus)
    - [ ] [**AllwaysIOnstallElevated** Vulnerbility](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#alwaysinstallelevated)
 
-2. Logging/AV enumeration:
+2. [Logging/AV enumeration: ](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#enumeration)
    - [ ] Check [Audit](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#audit-settings) and [WEF](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#wef) settings
    - [ ] Check [LAPS](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#laps)
    - [ ] Check if [**WDigest**](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#wdigest) is active
@@ -32,34 +32,34 @@
       - [ ] Password Policy
       - [ ] what is in the clipboard
 
-3. Network:
+3. [Network: ](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#network)
    - [ ] Check current [**network information**](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#network)
    - [ ] check **hidden local services** hidden to the outside
    - [ ] Enumerate the network (shares, interfaces, routes, neighbours, ...)
    - [ ] Take a special look at network services listening on localhost (127.0.0.1)
 
-4. Running Processes:
+4. [Running Processes: ](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#running-processes)
    - [ ] Processes Binaries [files and folder permisions](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#file-and-folder-permissions)
    - [ ] [**Memory Password mining**](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#memory-password-mining)
    - [ ] [Insecure GUI apps](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#insecure-gui-apps)
 
-5. Services:
+5. [Services: ](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#services)
    - [ ] can you [modify services](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#permissions)
    - [ ] can you modify the [binary that is executed by any service](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#modify-service-binary-path)
    - [ ] Can you [modify the registry of any service](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#services-registry-modify-permissions)
    - [ ] can you take advantage of [unqoted service path](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#unquoted-service-paths)
 
-6. Applications:
+6. [Applications: ](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#applications)
    - [ ] any [**Write** permisions on installed applications](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#write-permissions)
    - [ ] [**Startup Applications**](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#run-at-startup)
    - [ ] [**Vulnerble Drivers**](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#drivers)
 
-7. DLL Hijacking:
+7. [DLL Hijacking: ](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#path-dll-hijacking)
    - [ ] Can you write in any folder inside PATH?
    - [ ] Is there any known service binary that tries to load any non-existant DLL?
    - [ ] Can you write in any binaries folder?
   
-8. Windows Credentials:
+8. [Windows Credentials: ](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#windows-credentials)
    - [ ] [Winlogon](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#winlogon-credentials) Credentials
    - [ ] [Windows Vault](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#credentials-manager-windows-vault) that could be used
    - [ ] [DPAPI credentials](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#dpapi) that are interesting
@@ -70,5 +70,25 @@
    - [ ] if [**AppCmd.exe** exists](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#appcmd-exe) there may be credentials
    - [ ] [SCClient.exe](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#scclient-sccm) for DLL side loading
   
-9. [Files and Registry Credentials](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#files-and-registry-credentials)
-   
+9. [Files and Registry Credentials: ](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#files-and-registry-credentials)
+   - [ ] **Putty:** [creds](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#putty-creds) and [SSH Host Keys](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#putty-ssh-host-keys)
+   - [ ] [SSH Keys in Registry](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#ssh-keys-in-registry)  
+   - [ ] Passwords in [unattended files](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#unattended-files)
+   - [ ] [**SAM and SYSTEM**](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#sam-and-system-backups) File backups
+   - [ ] [**Cloud Credentials**](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#cloud-credentials)
+   - [ ] [**McAfee SiteList.xml**](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#mcafee-sitelist.xml)
+   - [ ] [Cached GPP Passwords](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#cached-gpp-pasword)
+   - [ ] [IIS Web Config file](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#iis-web-config) Passwords
+   - [ ] [web logs](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#logs)
+   - [ ] [ask the user for credentials](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#ask-for-credentials)
+   - [ ] [Recycle Bin](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#credentials-in-the-recyclebin)
+   - [ ] credential contained in [Registry](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#inside-the-registry)
+   - [ ] [Browser Data](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#browsers-history)
+   - [ ] Generic [Password Search](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#generic-password-search-in-files-and-registry) in files and reg
+   - [ ] [Tools](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#tools-that-search-for-passwords) to automate the search
+
+10. [Leaked Handlers: ](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#leaked-handlers)
+   - [ ] Have you access to any handler of a process run by administrator?
+
+11. [Pipe Client Impersonation: ](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#named-pipe-client-impersonation)
+   - [ ] Check if we can use it
