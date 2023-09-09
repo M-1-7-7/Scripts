@@ -1,0 +1,31 @@
+# This Script will enumerate the 3 netbios port
+
+#!/bin/bash
+
+#Argument Supplied Check
+display_usage() { 
+	echo -e "\nUsage: $0 <IP Address>\n" 
+	} 
+# if less than X arguments supplied, display usage 
+if [  $# -le 0 ] 
+then 
+	display_usage
+	exit 1
+fi 
+ 
+# check whether user had supplied -h or --help . If yes display usage 
+if [[ ( $@ == "--help") ||  $@ == "-h" ]] 
+then 
+	display_usage
+	exit 0
+fi 
+
+# Variable Assignment
+ip=$0
+cd $ip
+ 
+mkdir SMB_Enum && cd SMB_Enum
+
+nmblookup -A $ip > nslookup.out
+nbtscan $ip/30 >> nslookup.out
+nmap -sU -sV -T4 --script nbstat.nse -p 137 -Pn -n $ip >> nslookup.out
