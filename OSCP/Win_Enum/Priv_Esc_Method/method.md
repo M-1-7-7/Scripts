@@ -4,7 +4,7 @@
 
 1. System Info:
    - [ ] Obtain System Info
-   - [ ] Search for **Kernal** exploits `https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#version-exploits`
+   - [ ] Search for **Kernal** [exploits](https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#version-exploits)
    - [ ] Use **Google** to search for **Kernal** exploitsUse Google to search for kernel exploits
    - [ ] Use **searchsploit** to search for **kernel** exploits
    - [ ] Interesting Info in env vars (enviroment variables) `https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#environment`
@@ -13,5 +13,8 @@
    - [ ] Drivers `https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#drives`
    - [ ] **WSUS** exploit `https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#wsus`
    - [ ] **AllwaysIOnstallElevated** Vulnerbility `https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#alwaysinstallelevated`
-  
+
+2. Logging/AV enumeration:
+   - [ ] Check Audit and WEF settings
+   - [ ] Check LAPS
    - [ ] 
