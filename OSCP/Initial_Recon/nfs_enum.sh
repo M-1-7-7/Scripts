@@ -3,7 +3,8 @@
 # NFS enum scan
 
 ip=$1
-
+cd $ip
+mkdir NFS_Enum && cd NFS_Enum
 #run rpcinfo to get information about whats servicses are availible
 rpcinfo -p $ip > rpc_info.out
 
