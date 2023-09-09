@@ -1,8 +1,24 @@
 #!/bin/bash
 
-#usage:
-# have all scripts in the same directory before starting
-# ./initialNMAP.sh <ip address>
+#Argument Supplied Check
+display_usage() { 
+	echo -e "\nUsage: $0 <IP Address> <Domain> <User Name Wordlist>\n" 
+	} 
+# if less than 3 arguments supplied, display usage 
+if [  $# -le 0 ] 
+then 
+	display_usage
+	exit 1
+fi 
+ 
+# check whether user had supplied -h or --help . If yes display usage 
+if [[ ( $@ == "--help") ||  $@ == "-h" ]] 
+then 
+	display_usage
+	exit 0
+fi 
+
+# Variable Assignment
 ip=$1
 scriptDir=$(pwd)
 
