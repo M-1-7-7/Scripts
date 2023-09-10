@@ -24,7 +24,7 @@ fi
 ip=$0
 cd $ip
  
-mkdir SMB_Enum && cd SMB_Enum
+mkdir NetBIOS_Enum && cd NetBIOS_Enum
 
 nmblookup -A $ip > nslookup.out
 nbtscan $ip/30 >> nslookup.out
