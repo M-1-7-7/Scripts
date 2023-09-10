@@ -97,7 +97,7 @@ then
  	echo "%%%" >> SMB_credentialed_enum.out
   	echo "%%%" >> SMB_credentialed_enum.out
 else
-	echo("no credential scan as credentials not provided") >> SMB_credentialed_enum.out
+	echo "no credential scan as credentials not provided" >> SMB_credentialed_enum.out
  	echo "%%%" >> SMB_credentialed_enum.out
   	echo "%%%" >> SMB_credentialed_enum.out
 fi
