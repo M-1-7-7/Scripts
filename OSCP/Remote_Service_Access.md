@@ -22,6 +22,11 @@
 ### SSH (setting up keys)
 1. ssh -i id_rsa -p 2222 dave@192.168.230.201
 - chmod 600 id_rsa 
+2. Setting up key based authentication
+- `chmod 0700 ~/.ssh`
+- Copy `id_rsa` and `id_rsa.pub` files to kali
+- mv `id_rsa` to the `~/.ssh` direcorty and chmod with 600 permisions
+- mv `id_rsa.pub` to `~/.ssh` and rename it as `authorized_keys`
 
 ### psexec
 
