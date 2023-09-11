@@ -18,5 +18,5 @@ do
 	nmap -vv --reason -Pn -sV -p $line --script=`banner,(http* or ssl*) and not (brute or broadcast or dos or external or http-slowloris* or fuzzer)` $ip >> web_gerneral.out
 	
  	echo -e "\n===== Begining Feroxbuster for Port $line =====\n"
- 	feroxbuster -C 404,500,403 -d 3 -u http://$ip:$line/ -w "/usr/share/seclists/Discovery/Web-Content/combined_words.txt" -x html,pdf,php,asp,htaccess,json,docx,xml -o ferox_port_$line.txt
+ 	feroxbuster -C 404,500,403 -d 2 -u http://$ip:$line/ -w "/usr/share/seclists/Discovery/Web-Content/combined_words.txt" -x html,pdf,php,asp,htaccess,json,docx,xml -o ferox_port_$line.txt
 done;
