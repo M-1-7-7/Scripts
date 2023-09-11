@@ -43,10 +43,10 @@ sudo nmap -sUT -p $(cat portList.txt) -sVC -Pn $ip --open -o sVC_Port_Scan.txt
 #open ports for report 
 cat sVC_Port_Scan.txt | grep "PORT\|open" > ports_for_report.txt
 
-#Begin Feroxbuster Scan | this will run in background, output can be read from the output file
-cd $scriptDir
-echo $scriptDir
-./web_enum.sh $ip 
+#start web enum if HTTP ports are open
+echo -e "\n===== Begining Web Service Scan =====\n"
+
+echo -e  "check if the port and ip address is woking in url\n Else you will need to add the somain name to the /etc/hosts file and try access with the domain name and port\n for whichever worked, use feroxbuster to enumerate the web site."
 
 
 
