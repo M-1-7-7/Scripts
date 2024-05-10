@@ -1,8 +1,8 @@
 # Conducting IR Task
-
+##
 ## Overview
 These scripts can be used to automate the aquisistion proccesses of digital forensics and incident respone.  All scripts are aimed to be dinamic and modulare to easily mold to many incident responce tasks.
-
+##
 ## Artifact Types `artifact name, location, description, book.page#, more`
 - Prefetch data, `C:\Windows\Prefetch`, contains executable name/execution time(s)/number of times executed, 2.6
 - shimcache, `SYSTEM\CurrentContolSet\Control\SessionManager\AppCompatCache\AppCompatCache`, available on windows 7 and later | AppCompatCache tracks the executable file's last modification date and file path | Advanced: Applications will be shimmed again (w/ additional entry) if the file content is updated or renamed. Good for proving application was moved, renamed, or timestamps were manipulated (If current File's Modified time # ShimCache Modified time), 2.14-16
@@ -10,7 +10,7 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
  
 ## Flow
 - book 4 page 25 shows proccess for identifying compromise with no sign of malware through different arifacts.
-
+##
 ## Artifact Collection Techniqes `exe(Description, OS, book.page#, more)`
 ### 1. Prefetch Data Analysis (Ref. Artiact Types for overview^^)
 - PECmd.exe (can parse a single or multiple prefetch files, Windows, 2.9-13)
@@ -38,7 +38,7 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 - vshadowinfo (must be a raw image and lists all available shadow snapshots on disk, Linux, 5.13)
 - vshadowmount (must be raw volume, Linux, 5.13)
 - Log2timeline (for VSS volume shadow copies, Linux, 5.17)
-  
+##
 ## Scripts
 1. Volatility Automation Script (this will automate/semi-automate memory forensics)
 2. Plaso Automation Script (Extraction of data like registries, web history, etc.)
