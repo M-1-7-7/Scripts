@@ -6,15 +6,16 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 ## Artifact Types `artifact name, location, description, book.page#, more`
 - Prefetch data, `C:\Windows\Prefetch`, contains executable name/execution time(s)/number of times executed, 2.6
 - shimcache, `SYSTEM\CurrentContolSet\Control\SessionManager\AppCompatCache\AppCompatCache`, available on windows 7 and later | AppCompatCache tracks the executable file's last modification date and file path | Advanced: Applications will be shimmed again (w/ additional entry) if the file content is updated or renamed. Good for proving application was moved, renamed, or timestamps were manipulated (If current File's Modified time # ShimCache Modified time), 2.14-16
+- amcache, `C:\Windows\AppCompat\Programs\Amcache.hve`, tracks installed apps/loaded drives/and unasociated executables | Full path, file size, file modification time, compilation time, publisher metadata, 2.17
 - 
- 
+
 ## Flow
 - book 4 page 25 shows proccess for identifying compromise with no sign of malware through different arifacts.
 
 ## Artifact Collection Techniqes `exe(Description, OS, book.page#, more)`
 
 <details>
-<summary><b>1. Prefetch Data Analysis (Ref. Artiact Types for overview^^)</b></summary>
+<summary><b>1. Prefetch Data Analysis</b> (Ref. Artiact Types for overview^^) </summary>
 <ul>
  <li>PECmd.exe (can parse a single or multiple prefetch files, Windows, 2.9-13)</li>
 </ul>
@@ -23,7 +24,14 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 <details>
 <summary><b>2. Shimcache Data Extraction</b></summary>
 <ul>
- <li>appcompatparser.exe (powershell tool that extracts shimcache data for data in the SYSTEM hive, Windows, 2.16)</li>
+ <li>appcompatparser.exe (powershell tool that extracts amcache data for data in the SYSTEM hive, Windows, 2.16)</li>
+</ul>
+</details>
+
+<details>
+<summary><b>3. amcache Data Extraction </b> (Ref. Artiact Types for overview^^) </summary>
+<ul>
+ <li>amcacheparser.exe (powershell tool that extracts shimcache data for data in the hive, Windows, 2.16)</li>
 </ul>
 </details>
 
