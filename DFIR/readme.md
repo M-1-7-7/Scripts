@@ -6,6 +6,7 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 ## Artifact Types
 
 ## Flow
+- book 4 page 25 shows proccess for identifying compromise with no sign of malware through different arifacts.
 
 ## Artifact Collection Techniqes
 
