@@ -1,4 +1,5 @@
-# Artifact Collection Techniqes `exe(Description, OS, book.page#, more)`
+# Artifact Collection Techniqes 
+`exe(Description, OS, book.page#, more)`
 
 <details>
  <summary><b>1. Prefetch Data Analysis</b> (Ref. Artiact Types for overview^^) </summary>
