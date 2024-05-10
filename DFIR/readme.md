@@ -17,7 +17,8 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 ### Examine shadow copies (Linux)
 - vshadowinfo (must be a raw image, lists all available shadow snapshots on disk) (book 5, page 13)
 - vshadowmount (must be raw volume) (book 5, page 13)
-
+- Log2timeline (for VSS volume shadow copies) (book 5, page 17)
+  
 ## Scripts
 
 1. Volatility Automation Script (this will automate/semi-automate memory forensics)
