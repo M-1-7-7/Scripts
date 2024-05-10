@@ -9,14 +9,14 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 
 ## Artifact Collection Techniqes
 
-### Examine shadow copies (Windows)
+### 1. Examine shadow copies (Windows)
 - KAPE (Triage Analysis) (book 5, page 12)
 - Velociraptor (Triage Analysis) (book 5, page 12)
 - Arsenal Image Mounter (Full-Volume Image) (book 5, page 12)
 - F-Response (Full-Volume Image) (book 5, page 12)
 - vshadowmount (Full-Volume Image) (book 5, page 12)
   
-### Examine shadow copies (Linux)
+### 2. Examine shadow copies (Linux)
 - vshadowinfo (must be a raw image, lists all available shadow snapshots on disk) (book 5, page 13)
 - vshadowmount (must be raw volume) (book 5, page 13)
 - Log2timeline (for VSS volume shadow copies) (book 5, page 17)
