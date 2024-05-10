@@ -15,6 +15,9 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 ### 1. Prefetch Data Analysis (Ref. Artiact Types for overview^^)
 - PECmd.exe (can parse a single or multiple prefetch files, Windows, 2.9-13)
 
+### 2. Shimcache Data Extraction
+- appcompatparser.exe (powershell tool that extracts shimcache data for data in the SYSTEM hive, Windows, 2.16)
+  
 ### 1. Malware Discovery 
 - sigcheck.exe (check for code signing of executables, Windows, 4.6, can be ouput as csv and loaded into timeline_analyser)
 - entropy.exe (checks file entropy to identify anomelies in data, Windows, 4.7)
