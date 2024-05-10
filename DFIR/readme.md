@@ -9,14 +9,21 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 
 ## Artifact Collection Techniqes
 
-### 1. Examine shadow copies (Windows)
+### 1. Malware Discovery exe(Description, OS, book.page#, more)
+- sigcheck.exe (check for code signing of executables, Windows, 4.6, can be ouput as csv and loaded into timeline_analyser)
+- entropy.exe (checks file entropy to identify anomelies in data, Windows, 4.7)
+- yarra rule (identifies malware based on a number of properties, any, 4.8-11)
+- maldump (idenetifies and extracts quarentiened filed from antivirus software, 4.12-13)
+- capa (triage an executable and display its properties, 14-16)
+  
+### 2. Examine shadow copies (Windows)
 - KAPE (Triage Analysis) (book 5, page 12)
 - Velociraptor (Triage Analysis) (book 5, page 12)
 - Arsenal Image Mounter (Full-Volume Image) (book 5, page 12)
 - F-Response (Full-Volume Image) (book 5, page 12)
 - vshadowmount (Full-Volume Image) (book 5, page 12)
   
-### 2. Examine shadow copies (Linux)
+### 3. Examine shadow copies (Linux)
 - vshadowinfo (must be a raw image, lists all available shadow snapshots on disk) (book 5, page 13)
 - vshadowmount (must be raw volume) (book 5, page 13)
 - Log2timeline (for VSS volume shadow copies) (book 5, page 17)
