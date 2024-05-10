@@ -1,8 +1,7 @@
 # Conducting IR Task
-##
 ## Overview
 These scripts can be used to automate the aquisistion proccesses of digital forensics and incident respone.  All scripts are aimed to be dinamic and modulare to easily mold to many incident responce tasks.
-
+`continue noting tools from book 2 page 35`
 ## Artifact Types `artifact name, location, description, book.page#, more`
 - Prefetch data, `C:\Windows\Prefetch`, contains executable name/execution time(s)/number of times executed, 2.6
 - shimcache, `SYSTEM\CurrentContolSet\Control\SessionManager\AppCompatCache\AppCompatCache`, available on windows 7 and later | AppCompatCache tracks the executable file's last modification date and file path | Advanced: Applications will be shimmed again (w/ additional entry) if the file content is updated or renamed. Good for proving application was moved, renamed, or timestamps were manipulated (If current File's Modified time # ShimCache Modified time), 2.14-16
