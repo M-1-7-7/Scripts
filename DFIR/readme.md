@@ -3,8 +3,9 @@
 ## Overview
 These scripts can be used to automate the aquisistion proccesses of digital forensics and incident respone.  All scripts are aimed to be dinamic and modulare to easily mold to many incident responce tasks.
 
-## Artifact Types
-
+## Artifact Types `artifact name, location, description, book.page#, more`
+- Prefetch data, `C:\Windows\Prefetch`, contains executable name/execution time(s)/number of times executed, 2.6
+- 
 ## Flow
 - book 4 page 25 shows proccess for identifying compromise with no sign of malware through different arifacts.
 
