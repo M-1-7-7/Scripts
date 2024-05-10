@@ -10,14 +10,19 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 
 ## Artifact Collection Techniqes `exe(Description, OS, book.page#, more)`
 
+
 ### 1. Malware Discovery 
 - sigcheck.exe (check for code signing of executables, Windows, 4.6, can be ouput as csv and loaded into timeline_analyser)
 - entropy.exe (checks file entropy to identify anomelies in data, Windows, 4.7)
 - yarra rule (identifies malware based on a number of properties, any, 4.8-11)
 - maldump (idenetifies and extracts quarentiened filed from antivirus software, XXX, 4.12-13)
 - capa (triage an executable and display its properties, XXX, 14-16)
-  
-### 2. Examine shadow copies
+
+### 2. Timeline Anlysis
+- MFTEcmd.exe (uses windows artifacts to generate filesystem timeline, Windows, 4.43-44)
+- fls (can run againes live or dead file systems and generates comprehensive file system timelines, Any, 4.45)
+
+### 3. Examine shadow copies
 - KAPE (Triage Analysis, Windows, 5.12)
 - Velociraptor (Triage Analysis, Windows, 5.12)
 - Arsenal Image Mounter (Full-Volume Image, Windows, 5.12)
