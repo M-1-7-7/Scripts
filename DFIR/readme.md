@@ -10,7 +10,8 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 - book 4 page 25 shows proccess for identifying compromise with no sign of malware through different arifacts.
 
 ## Artifact Collection Techniqes `exe(Description, OS, book.page#, more)`
-
+### 1. Prefetch Data Analysis (Ref. Artiact Types for overview^^)
+- PECmd.exe (can parse a single or multiple prefetch files, Windows, 2.9)
 
 ### 1. Malware Discovery 
 - sigcheck.exe (check for code signing of executables, Windows, 4.6, can be ouput as csv and loaded into timeline_analyser)
