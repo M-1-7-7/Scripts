@@ -22,7 +22,6 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 - Log2timeline (for VSS volume shadow copies) (book 5, page 17)
   
 ## Scripts
-
 1. Volatility Automation Script (this will automate/semi-automate memory forensics)
 2. Plaso Automation Script (Extraction of data like registries, web history, etc.)
 3. Log2Timeline Filter Files
