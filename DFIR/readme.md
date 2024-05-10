@@ -32,6 +32,10 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 ### 3. Examine shadow copies
 <details>
 <summary>### 3. Examine shadow copies</summary>
+<ul>
+ <li>KAPE (Triage Analysis, Windows, 5.12)</li>
+ <li>Velociraptor (Triage Analysis, Windows, 5.12)</li>
+</ul>
 - KAPE (Triage Analysis, Windows, 5.12)
 - Velociraptor (Triage Analysis, Windows, 5.12)
 - Arsenal Image Mounter (Full-Volume Image, Windows, 5.12)
