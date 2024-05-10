@@ -21,7 +21,7 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 </details>
 
 <details>
- <summary><b>2. Shimcache Data Extraction</b></summary>
+ <summary><b>2. Shimcache Data Extraction</b> (Ref. Artiact Types for overview^^) </summary>
  <ul>
   <li>appcompatparser.exe (powershell tool that extracts amcache data for data in the SYSTEM hive, Windows, 2.16)</li>
   <li>appcompatprocessor.py (powershell tool that automates the hunt for shimcache and amcache artifacts, Windows, 2.28-33)</li>
