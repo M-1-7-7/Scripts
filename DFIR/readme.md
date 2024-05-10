@@ -7,6 +7,13 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 
 ## Flow
 
+### Examine shadow copies (Windows)
+- KAPE (Triage Analysis) (book 5, page 12)
+- Velociraptor (Triage Analusis) (book 5, page 12)
+
+### Examine shadow copies (Linux)
+- vshadowinfo (must be a raw image, no foresics images) (book 5, page 13)
+- j
 
 ## Scripts
 
