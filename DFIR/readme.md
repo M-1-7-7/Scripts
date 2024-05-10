@@ -31,19 +31,17 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 
 ### 3. Examine shadow copies
 <details>
-<summary>### 3. Examine shadow copies</summary>
+<summary><b>3. Examine shadow copies</b></summary>
 <ul>
  <li>KAPE (Triage Analysis, Windows, 5.12)</li>
  <li>Velociraptor (Triage Analysis, Windows, 5.12)</li>
+ <li>Arsenal Image Mounter (Full-Volume Image, Windows, 5.12)</li>
+ <li>F-Response (Full-Volume Image, Windows, 5.12)</li>
+ <li>vshadowmount (Full-Volume Image, Windows, 5.12)</li>
+ <li>vshadowinfo (must be a raw image and lists all available shadow snapshots on disk, Linux, 5.13)</li>
+ <li>vshadowmount (must be raw volume, Linux, 5.13)</li>
+ <li>Log2timeline (for VSS volume shadow copies, Linux, 5.17)</li>
 </ul>
-- KAPE (Triage Analysis, Windows, 5.12)
-- Velociraptor (Triage Analysis, Windows, 5.12)
-- Arsenal Image Mounter (Full-Volume Image, Windows, 5.12)
-- F-Response (Full-Volume Image, Windows, 5.12)
-- vshadowmount (Full-Volume Image, Windows, 5.12)
-- vshadowinfo (must be a raw image and lists all available shadow snapshots on disk, Linux, 5.13)
-- vshadowmount (must be raw volume, Linux, 5.13)
-- Log2timeline (for VSS volume shadow copies, Linux, 5.17)
 </details>
 
 
