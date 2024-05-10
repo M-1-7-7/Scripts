@@ -12,24 +12,40 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 - book 4 page 25 shows proccess for identifying compromise with no sign of malware through different arifacts.
 
 ## Artifact Collection Techniqes `exe(Description, OS, book.page#, more)`
-### 1. Prefetch Data Analysis (Ref. Artiact Types for overview^^)
-- PECmd.exe (can parse a single or multiple prefetch files, Windows, 2.9-13)
 
-### 2. Shimcache Data Extraction
-- appcompatparser.exe (powershell tool that extracts shimcache data for data in the SYSTEM hive, Windows, 2.16)
-  
-### 1. Malware Discovery 
-- sigcheck.exe (check for code signing of executables, Windows, 4.6, can be ouput as csv and loaded into timeline_analyser)
-- entropy.exe (checks file entropy to identify anomelies in data, Windows, 4.7)
-- yarra rule (identifies malware based on a number of properties, any, 4.8-11)
-- maldump (idenetifies and extracts quarentiened filed from antivirus software, XXX, 4.12-13)
-- capa (triage an executable and display its properties, XXX, 14-16)
+<details>
+<summary><b>1. Prefetch Data Analysis (Ref. Artiact Types for overview^^)</b></summary>
+<ul>
+ <li>PECmd.exe (can parse a single or multiple prefetch files, Windows, 2.9-13)</li>
+</ul>
+</details>
 
-### 2. Timeline Anlysis
-- MFTEcmd.exe (uses windows artifacts to generate filesystem timeline, Windows, 4.43-44)
-- fls (can run againes live or dead file systems and generates comprehensive file system timelines, Any, 4.45)
+<details>
+<summary><b>2. Shimcache Data Extraction</b></summary>
+<ul>
+ <li>appcompatparser.exe (powershell tool that extracts shimcache data for data in the SYSTEM hive, Windows, 2.16)</li>
+</ul>
+</details>
 
-### 3. Examine shadow copies
+<details>
+<summary><b>1. Malware Discovery </b></summary>
+<ul>
+ <li>sigcheck.exe (check for code signing of executables, Windows, 4.6, can be ouput as csv and loaded into timeline_analyser)</li>
+ <li>entropy.exe (checks file entropy to identify anomelies in data, Windows, 4.7)</li>
+ <li>yarra rule (identifies malware based on a number of properties, any, 4.8-11)</li>
+ <li>maldump (idenetifies and extracts quarentiened filed from antivirus software, XXX, 4.12-13)</li>
+ <li>capa (triage an executable and display its properties, XXX, 14-16)</li>
+</ul>
+</details>
+
+<details>
+<summary><b>2. Timeline Anlysis</b></summary>
+<ul>
+ <li>MFTEcmd.exe (uses windows artifacts to generate filesystem timeline, Windows, 4.43-44)</li>
+ <li>fls (can run againes live or dead file systems and generates comprehensive file system timelines, Any, 4.45)</li>
+</ul>
+</details>
+
 <details>
 <summary><b>3. Examine shadow copies</b></summary>
 <ul>
