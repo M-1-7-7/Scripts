@@ -9,7 +9,7 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 
 ## Artifact Collection Techniqes
 
-### 1. Malware Discovery exe(Description, OS, book.page#, more)
+### 1. Malware Discovery `exe(Description, OS, book.page#, more)`
 - sigcheck.exe (check for code signing of executables, Windows, 4.6, can be ouput as csv and loaded into timeline_analyser)
 - entropy.exe (checks file entropy to identify anomelies in data, Windows, 4.7)
 - yarra rule (identifies malware based on a number of properties, any, 4.8-11)
