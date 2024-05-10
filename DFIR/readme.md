@@ -5,7 +5,9 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 
 ## Artifact Types `artifact name, location, description, book.page#, more`
 - Prefetch data, `C:\Windows\Prefetch`, contains executable name/execution time(s)/number of times executed, 2.6
+- shimcache, `SYSTEM\CurrentContolSet\Control\SessionManager\AppCompatCache\AppCompatCache`, available on windows 7 and later | AppCompatCache tracks the executable file's last modification date and file path | Advanced: Applications will be shimmed again (w/ additional entry) if the file content is updated or renamed. Good for proving application was moved, renamed, or timestamps were manipulated (If current File's Modified time # ShimCache Modified time), 2.14-16
 - 
+ 
 ## Flow
 - book 4 page 25 shows proccess for identifying compromise with no sign of malware through different arifacts.
 
