@@ -9,11 +9,14 @@ These scripts can be used to automate the aquisistion proccesses of digital fore
 
 ### Examine shadow copies (Windows)
 - KAPE (Triage Analysis) (book 5, page 12)
-- Velociraptor (Triage Analusis) (book 5, page 12)
-
+- Velociraptor (Triage Analysis) (book 5, page 12)
+- Arsenal Image Mounter (Full-Volume Image) (book 5, page 12)
+- F-Response (Full-Volume Image) (book 5, page 12)
+- vshadowmount (Full-Volume Image) (book 5, page 12)
+  
 ### Examine shadow copies (Linux)
-- vshadowinfo (must be a raw image, no foresics images) (book 5, page 13)
-- j
+- vshadowinfo (must be a raw image, lists all available shadow snapshots on disk) (book 5, page 13)
+- vshadowmount (must be raw volume) (book 5, page 13)
 
 ## Scripts
 
