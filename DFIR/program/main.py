@@ -40,10 +40,11 @@ def analyse_memory():
 
 def malware_anaysis():
     if os_host == "Windows":
-        with open("C:\\Users\\ABB58612\\Documents\\DFIR_Tool_Suite\\Win_Malware_Analysis.py") as file:
-            exec(file.read())
+        path = file_path + "\\Win_Malware_Analysis.py"
     elif os_host == "Linux":
-        with open("C:\\Users\\ABB58612\\Documents\\DFIR_Tool_Suite\\Lin_Malware_Analysis.py") as file:
+        path = file_path + "\\Lin_Malware_Analysis.py"
+        
+    with open(path) as file:
             exec(file.read())
 
 def main():
