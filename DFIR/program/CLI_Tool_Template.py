@@ -17,13 +17,13 @@ class tool_selection:
         print("YOUR TARGET FILE IS: \n" + target_file + "\n\n")
 
     def tool_0():
-        print("you selected tool 1")
+        print("you selected tool 0")
 
     def tool_1():
-        print("you selected tool 2")
+        print("you selected tool 1")
 
     def tool_2():
-        print("you selected tool 3")
+        print("you selected tool 2")
 
 
     while Select_A_Tool is True:
