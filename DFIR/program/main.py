@@ -43,7 +43,9 @@ def malware_anaysis():
         path = file_path + "\\Win_Malware_Analysis.py"
     elif os_host == "Linux":
         path = file_path + "\\Lin_Malware_Analysis.py"
-        
+    elif os_host == "Darwin":
+        path = file_path + "/CLI_Tool_Template.py"
+
     with open(path) as file:
             exec(file.read())
 
