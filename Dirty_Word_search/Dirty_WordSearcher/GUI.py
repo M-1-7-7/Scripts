@@ -7,6 +7,7 @@ from tkinter import messagebox
 # Window Configuration
 root = Tk()
 root.geometry("800x600")
+root.title("Dirty Word Searcher")
 frm = ttk.Frame(root, padding=10)
 frm.grid()
 DW_Var=tkinter.StringVar()
@@ -45,6 +46,41 @@ def scan_word_doc():
 def scan_txt_doc():
     print("scanning txt docs")
 
+# Functions from GUI Buttons
+def search_files():
+    # checkl if all conditions of user input are met (valid field entries and checkboxes)
+
+    if All_Document_Type_Button_Val.get() == 1:
+        print("Scanning all docs")
+        scan_excel_doc()
+        scan_pdf_doc()
+        scan_powerpoint_doc()
+        scan_word_doc()
+        scan_txt_doc()
+
+    elif All_Document_Type_Button_Val.get() == 0:
+        if Excel_Button_Val.get() == 1:
+            scan_excel_doc()
+
+        if PDF_Button_Val.get() == 1:
+            scan_pdf_doc()
+
+        if PowerPoint_Button_Val.get() == 1:
+            scan_powerpoint_doc()
+
+        if Doc_Button_Val.get() == 1:
+            scan_word_doc()
+
+        if TXT_Button_Val.get() == 1:
+            scan_txt_doc()
+
+def check_checkboxes():
+    if All_Document_Type_Button_Val.get() == 0 and PDF_Button_Val.get() == 0 and PowerPoint_Button_Val.get() == 0 and Doc_Button_Val.get() == 0 and TXT_Button_Val.get() == 0 and Excel_Button_Val.get() == 0:
+        messagebox.showerror("Checkbox Status", "please check at least one checkbox")
+        main_screen()
+    else:
+        search_files()
+
 def check_user_input():
     user_input_bad = ""
     # check if directory exists
@@ -71,38 +107,9 @@ def check_user_input():
 
     if len(user_input_bad) >0:
         messagebox.showerror("Your Input Status", user_input_bad)
+    else:
+        check_checkboxes()
 
-# Functions from GUI Buttons
-def search_files():
-    # Ensure the files and Dirs entered by user are going to work
-    check_user_input()
-
-    if All_Document_Type_Button_Val.get() == 1:
-        print("Scanning all docs")
-        scan_excel_doc()
-        scan_pdf_doc()
-        scan_powerpoint_doc()
-        scan_word_doc()
-        scan_txt_doc()
-
-    if All_Document_Type_Button_Val.get() == 0:
-        if Excel_Button_Val.get() == 1:
-            scan_excel_doc()
-
-        if PDF_Button_Val.get() == 1:
-            scan_pdf_doc()
-
-        if PowerPoint_Button_Val.get() == 1:
-            scan_powerpoint_doc()
-
-        if Doc_Button_Val.get() == 1:
-            scan_word_doc()
-
-        if TXT_Button_Val.get() == 1:
-            scan_txt_doc()
-    if All_Document_Type_Button_Val.get() == 0 and PDF_Button_Val.get() == 0 and PowerPoint_Button_Val.get() == 0 and Doc_Button_Val.get() == 0 and TXT_Button_Val.get() == 0 and Excel_Button_Val.get() == 0:
-        messagebox.showerror("Checkbox Status", "please check at least one checkbox")
-        
 def reset_values():
     print("Resetting")
     DW_Var.set("")
@@ -132,7 +139,7 @@ def main_screen():
     #show_pptx_results = ttk.Button(frm, text="Show pptx Results", command=)
     #show_pdf_results = ttk.Button(frm, text="Show pdf Results", command=)
     #show_xls_results = ttk.Button(frm, text="Show xls Results", command=)
-    search_btn = ttk.Button(frm, text="Search", command=search_files)
+    search_btn = ttk.Button(frm, text="Search", command=check_user_input)
     reset_btn = ttk.Button(frm, text="Reset", command=reset_values)
     quit_btn = ttk.Button(frm, text="Quit", command=root.destroy)
 
