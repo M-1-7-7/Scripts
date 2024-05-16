@@ -1,19 +1,20 @@
+import subprocess
 from tkinter import *
 from tkinter import ttk
 import tkinter
 import os
 from tkinter import messagebox
-
 # Window Configuration
 root = Tk()
 root.geometry("800x600")
-root.title("Dirty Word Searcher")
 frm = ttk.Frame(root, padding=10)
 frm.grid()
 DW_Var=tkinter.StringVar()
 start_dir_Var=tkinter.StringVar()
 out_dir_Var=tkinter.StringVar()
-
+dirty_words_txt = DW_Var.get()
+begin_search_dir = start_dir_Var.get()
+output_search_dir = out_dir_Var.get()
 # Dictionary to create multiple buttons
 Excel_Button_Val = IntVar() 
 PDF_Button_Val = IntVar() 
@@ -31,71 +32,37 @@ def scan_all_docs():
     scan_word_doc()
     scan_txt_doc()
     find_all_other_files()
-
+    
 def scan_excel_doc():
     print("Scanning excel docs")
-    subprocess.run(["python", "\\Dirty_Word_search\\Dirty_WordSearcher\\xls_searcher.py", dirty_words_txt, begin_search_dir, output_search_dir])
+    subprocess.run(["python", "C:\\Users\\Will\\Desktop\\Scripts-main\\Dirty_Word_search\\Dirty_WordSearcher\\xls_searcher.py", DW_Var.get(), start_dir_Var.get(), out_dir_Var.get()])
     print("On to the next")
 
 def scan_pdf_doc():
     print("Scanning pdf docs")
-    subprocess.run(["python", "\\Dirty_Word_search\\Dirty_WordSearcher\\pdf_searcher.py", dirty_words_txt, begin_search_dir, output_search_dir])
+    subprocess.run(["python", "C:\\Users\\Will\\Desktop\\Scripts-main\\Dirty_Word_search\\Dirty_WordSearcher\\pdf_searcher.py", DW_Var.get(), start_dir_Var.get(), out_dir_Var.get()])
     print("On to the next")
 
 def scan_powerpoint_doc():
     print("Scanning powerpoint docs")
-    subprocess.run(["python", "\\Dirty_Word_search\\Dirty_WordSearcher\\ppt_searcher.py", dirty_words_txt, begin_search_dir, output_search_dir])
+    subprocess.run(["python", "C:\\Users\\Will\\Desktop\\Scripts-main\\Dirty_Word_search\\Dirty_WordSearcher\\ppt_searcher.py", DW_Var.get(), start_dir_Var.get(), out_dir_Var.get()])
     print("On to the next")
 
 def scan_word_doc():
     print("Scanning word docs")
-    subprocess.run(["python", "\\Dirty_Word_search\\Dirty_WordSearcher\\word_searcher.py", dirty_words_txt, begin_search_dir, output_search_dir])
+    print(DW_Var.get())
+    subprocess.run(["python", "C:\\Users\\Will\\Desktop\\Scripts-main\\Dirty_Word_search\\Dirty_WordSearcher\\word_searcher.py", DW_Var.get(), start_dir_Var.get(), out_dir_Var.get()])
     print("On to the next")
 
 def scan_txt_doc():
     print("scanning txt docs")
-    subprocess.run(["python", "\\Dirty_Word_search\\Dirty_WordSearcher\\txt_searcher.py", dirty_words_txt, begin_search_dir, output_search_dir])
+    subprocess.run(["python", "C:\\Users\\Will\\Desktop\\Scripts-main\\Dirty_Word_search\\Dirty_WordSearcher\\txt_searcher.py", DW_Var.get(), start_dir_Var.get(), out_dir_Var.get()])
     print("On to the next")
 
 def find_all_other_files():
     print("finding all other files")
-    subprocess.run(["python", "\\Dirty_Word_search\\Dirty_WordSearcher\\other_files.py", begin_search_dir, output_search_dir])
+    subprocess.run(["python", "C:\\Users\\Will\\Desktop\\Scripts-main\\Dirty_Word_search\\Dirty_WordSearcher\\other_files.py", start_dir_Var.get(), out_dir_Var.get()])
     print("On to the next")
-
-# Functions from GUI Buttons
-def search_files():
-    # checkl if all conditions of user input are met (valid field entries and checkboxes)
-
-    if All_Document_Type_Button_Val.get() == 1:
-        print("Scanning all docs")
-        scan_excel_doc()
-        scan_pdf_doc()
-        scan_powerpoint_doc()
-        scan_word_doc()
-        scan_txt_doc()
-
-    elif All_Document_Type_Button_Val.get() == 0:
-        if Excel_Button_Val.get() == 1:
-            scan_excel_doc()
-
-        if PDF_Button_Val.get() == 1:
-            scan_pdf_doc()
-
-        if PowerPoint_Button_Val.get() == 1:
-            scan_powerpoint_doc()
-
-        if Doc_Button_Val.get() == 1:
-            scan_word_doc()
-
-        if TXT_Button_Val.get() == 1:
-            scan_txt_doc()
-
-def check_checkboxes():
-    if All_Document_Type_Button_Val.get() == 0 and PDF_Button_Val.get() == 0 and PowerPoint_Button_Val.get() == 0 and Doc_Button_Val.get() == 0 and TXT_Button_Val.get() == 0 and Excel_Button_Val.get() == 0:
-        messagebox.showerror("Checkbox Status", "please check at least one checkbox")
-        main_screen()
-    else:
-        search_files()
 
 def check_user_input():
     user_input_bad = ""
@@ -123,9 +90,38 @@ def check_user_input():
 
     if len(user_input_bad) >0:
         messagebox.showerror("Your Input Status", user_input_bad)
-    else:
-        check_checkboxes()
 
+# Functions from GUI Buttons
+def search_files():
+    # Ensure the files and Dirs entered by user are going to work
+    check_user_input()
+
+    if All_Document_Type_Button_Val.get() == 1:
+        print("Scanning all docs")
+        scan_excel_doc()
+        scan_pdf_doc()
+        scan_powerpoint_doc()
+        scan_word_doc()
+        scan_txt_doc()
+
+    if All_Document_Type_Button_Val.get() == 0:
+        if Excel_Button_Val.get() == 1:
+            scan_excel_doc()
+
+        if PDF_Button_Val.get() == 1:
+            scan_pdf_doc()
+
+        if PowerPoint_Button_Val.get() == 1:
+            scan_powerpoint_doc()
+
+        if Doc_Button_Val.get() == 1:
+            scan_word_doc()
+
+        if TXT_Button_Val.get() == 1:
+            scan_txt_doc()
+    if All_Document_Type_Button_Val.get() == 0 and PDF_Button_Val.get() == 0 and PowerPoint_Button_Val.get() == 0 and Doc_Button_Val.get() == 0 and TXT_Button_Val.get() == 0 and Excel_Button_Val.get() == 0:
+        messagebox.showerror("Checkbox Status", "please check at least one checkbox")
+        
 def reset_values():
     print("Resetting")
     DW_Var.set("")
@@ -155,7 +151,7 @@ def main_screen():
     #show_pptx_results = ttk.Button(frm, text="Show pptx Results", command=)
     #show_pdf_results = ttk.Button(frm, text="Show pdf Results", command=)
     #show_xls_results = ttk.Button(frm, text="Show xls Results", command=)
-    search_btn = ttk.Button(frm, text="Search", command=check_user_input)
+    search_btn = ttk.Button(frm, text="Search", command=search_files)
     reset_btn = ttk.Button(frm, text="Reset", command=reset_values)
     quit_btn = ttk.Button(frm, text="Quit", command=root.destroy)
 
