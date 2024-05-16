@@ -2,7 +2,8 @@ from tkinter import *
 from tkinter import ttk
 import tkinter
 import os
-from tkinter import messagebox 
+from tkinter import messagebox
+
 # Window Configuration
 root = Tk()
 root.geometry("800x600")
@@ -45,42 +46,36 @@ def scan_txt_doc():
     print("scanning txt docs")
 
 def check_user_input():
-    user_input_good = ""
     user_input_bad = ""
     # check if directory exists
     if not os.path.exists(start_dir_Var.get()): 
         user_input_bad += "!!!Please enter a valid STARTING DIRECTORY!!!\n"
     else:
-        user_input_good += "starting directory is existing :)\n"
+        print("starting directory is existing :)\n")
 
     if not os.path.exists(out_dir_Var.get()): 
         user_input_bad += "!!!Please enter a valid OUTPUT DIRECTORY!!!\n"
     else:
-        user_input_good += "Output directory is existing :)\n"
+       print("Output directory is existing :)\n")
 
-    # check if we can read dirty word file
-    try:
-        with open(DW_Var.get(), "r"):
-            user_input_good += "we can open dirty word txt :)\n"
-    except PermissionError:
-        user_input_bad += "!!!Not Accesable!!!\n"
+    # Check if the file is writable using os.access()
+    if DW_Var.get().endswith('.txt'):
+        if os.access(DW_Var.get(), os.W_OK):
+            print(f"File '{DW_Var.get()}' is writable.") 
+        elif FileNotFoundError:
+            user_input_bad += "!!!Dirty Word File NOT FOUND!!!\n"
+        elif PermissionError:
+            user_input_bad += "!!!Please enter a valid FILE WITH PROGRAM HAS PERMISIONS!!!\n"
+    else:
+        user_input_bad += "!!!Please enter a valid TXT FILE!!!\n"
+
     if len(user_input_bad) >0:
         messagebox.showerror("Your Input Status", user_input_bad)
-    else:    
-        print(user_input_good)
 
 # Functions from GUI Buttons
 def search_files():
-    #dirty_word_file=DW_Var.get()
-    #start_directory=start_dir_Var.get()
-    #out_directory=out_dir_Var.get()
     # Ensure the files and Dirs entered by user are going to work
     check_user_input()
-
-    #For Dev Only
-    #print("This is my dirty word file: ", dirty_word_file)
-    #print("This is my starting dir: ", start_directory)
-    #print("This is my output dir: ", out_directory)
 
     if All_Document_Type_Button_Val.get() == 1:
         print("Scanning all docs")
@@ -105,7 +100,9 @@ def search_files():
 
         if TXT_Button_Val.get() == 1:
             scan_txt_doc()
-
+    if All_Document_Type_Button_Val.get() == 0 and PDF_Button_Val.get() == 0 and PowerPoint_Button_Val.get() == 0 and Doc_Button_Val.get() == 0 and TXT_Button_Val.get() == 0 and Excel_Button_Val.get() == 0:
+        messagebox.showerror("Checkbox Status", "please check at least one checkbox")
+        
 def reset_values():
     print("Resetting")
     DW_Var.set("")

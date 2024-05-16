@@ -1,5 +1,5 @@
 import os
-import PyPDF2
+import PyPDF2 
 
 # Function to search for PDF files recursively in a directory
 def find_pdf_files(directory):
