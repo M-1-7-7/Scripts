@@ -30,21 +30,37 @@ def scan_all_docs():
     scan_powerpoint_doc()
     scan_word_doc()
     scan_txt_doc()
+    find_all_other_files()
 
 def scan_excel_doc():
     print("Scanning excel docs")
+    subprocess.run(["python", "\\Dirty_Word_search\\Dirty_WordSearcher\\xls_searcher.py", dirty_words_txt, begin_search_dir, output_search_dir])
+    print("On to the next")
 
 def scan_pdf_doc():
     print("Scanning pdf docs")
-    
+    subprocess.run(["python", "\\Dirty_Word_search\\Dirty_WordSearcher\\pdf_searcher.py", dirty_words_txt, begin_search_dir, output_search_dir])
+    print("On to the next")
+
 def scan_powerpoint_doc():
     print("Scanning powerpoint docs")
-    
+    subprocess.run(["python", "\\Dirty_Word_search\\Dirty_WordSearcher\\ppt_searcher.py", dirty_words_txt, begin_search_dir, output_search_dir])
+    print("On to the next")
+
 def scan_word_doc():
     print("Scanning word docs")
-    
+    subprocess.run(["python", "\\Dirty_Word_search\\Dirty_WordSearcher\\word_searcher.py", dirty_words_txt, begin_search_dir, output_search_dir])
+    print("On to the next")
+
 def scan_txt_doc():
     print("scanning txt docs")
+    subprocess.run(["python", "\\Dirty_Word_search\\Dirty_WordSearcher\\txt_searcher.py", dirty_words_txt, begin_search_dir, output_search_dir])
+    print("On to the next")
+
+def find_all_other_files():
+    print("finding all other files")
+    subprocess.run(["python", "\\Dirty_Word_search\\Dirty_WordSearcher\\other_files.py", begin_search_dir, output_search_dir])
+    print("On to the next")
 
 # Functions from GUI Buttons
 def search_files():
