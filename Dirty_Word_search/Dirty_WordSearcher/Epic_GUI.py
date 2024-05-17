@@ -1,6 +1,7 @@
 import subprocess
 import PyPDF2 
 import os
+import openpyxl
 
 import tkinter
 from tkinter import *
@@ -12,6 +13,7 @@ from spire.doc.common import *
 from pptx import Presentation
 from pptx.exc import PackageNotFoundError
 from datetime import datetime
+
 # Window Configuration
 root = Tk()
 root.geometry("800x600")
@@ -27,7 +29,7 @@ begin_search_dir = start_dir_Var.get()
 output_search_dir = out_dir_Var.get()
 # buttons states
 Excel_Button_Val = IntVar() 
-PDF_Button_Val = IntVar() 
+PDF_Button_Val = IntVar()  
 PowerPoint_Button_Val = IntVar() 
 Doc_Button_Val = IntVar() 
 TXT_Button_Val = IntVar() 
@@ -45,67 +47,51 @@ def scan_all_docs():
     scan_word_doc()
     scan_txt_doc()
     find_all_other_files()
-    
-def scan_excel_doc():
-    print("Scanning excel docs")
-    #user input variables from GUI
-    positive_output_file = out_dir_Var.get() + "Positive_TXT_Results.out"
-    not_analysed_output_file = out_dir_Var.get() + "Cannot_Anayse_TXT_List.out"  
 
-    def find_text_files(directory):
-        text_files = []
+def scan_excel_doc():
+    # Function to search for Excel files recursively in a directory
+    def find_excel_files(directory):
+        excel_files = []
         for root, dirs, files in os.walk(directory):
             for file in files:
-                if file.lower().endswith('.txt'):
-                    text_files.append(os.path.join(root, file))
-        return text_files
+                if file.lower().endswith('.xlsx'):
+                    excel_files.append(os.path.join(root, file))
+        return excel_files
 
-    #Create Dirty Word list from the dirty word input file from user
+    # Load dirty words from file
     Dirty_words = []
     with open(DW_Var.get(), 'r') as file:
         lines = file.readlines()
-        for i in lines:
-            Dirty_words.append(i.strip())
+        for line in lines:
+            Dirty_words.append(line.strip())
 
-    # Search for text files on the entire computer
-    text_files = find_text_files(start_dir_Var.get())
+    # Search for Excel files on the entire computer
+    excel_files = find_excel_files(start_dir_Var.get())
 
-    # Load dirty words from file
-
-    #create output directories for results
-    if not os.path.exists(positive_output_file):
-        with open(positive_output_file, "w") as file:
-            file.write("THESE FILES HAVE ALL RETURNED A POSITIVE HIT\n------------\n------------\n")
-
-    if not os.path.exists(not_analysed_output_file):
-        with open(not_analysed_output_file, "w") as file:
-            file.write("THIS FILE WHERE NOT ABLE TO BE ANALYSED BY THE SCRIPT\n------------\n------------\n")
-
-    # Perform search in text files
-    for text_file in text_files:
+    # Perform search in Excel files
+    for excel_file in excel_files:
         try:
-            with open(text_file, 'r', encoding='utf-8') as file:  # Specify the encoding here
-                for line_num, line in enumerate(file, start=1):
-                    words_in_line = line.strip().split()
-                    for word in Dirty_words:
-                        # Check if word matches exactly the length specified
-                        if any(len(word) == len(w) and word.lower() == w.lower() for w in words_in_line):
-                            pos_string = f"File: {text_file} - Line: {line_num} - Contains dirty word: {word}"
-                            #print(f"File: {pdf_file} - Page: {page_num} - Contains dirty word: {word}")
-                            with open(positive_output_file, "a") as file:
-                                file.write(pos_string + "\n")
-                            print()
+            wb = openpyxl.load_workbook(excel_file)
+            # Iterate over each sheet in the workbook
+            for sheet_name in wb.sheetnames:
+                sheet = wb[sheet_name]
+                # Iterate over each cell in the sheet
+                for row in sheet.iter_rows():
+                    for cell in row:
+                        if cell.value is not None and isinstance(cell.value, str):
+                            # Split the cell contents into words
+                            words = cell.value.lower().split()
+                            # Search for dirty words in the split words
+                            for word in words:
+                                if word in Dirty_words:
+                                    print(f"File: {excel_file} - Sheet: {sheet_name} - Cell: {cell.coordinate} - Contains dirty word: {word}")
         except Exception as e:
-            not_string = f"Error processing {text_file}: {e}"
-            with open(not_analysed_output_file, "a") as file:
-                file.write(not_string + "\n")    
-    
-    print("On to the next")
+            print(f"Error processing {excel_file}: {e}")
 
 def scan_pdf_doc():
     print("Scanning pdf docs")
-    positive_output_file = out_dir_Var.get() + "Positive_PDF_Results.out"
-    not_analysed_output_file = out_dir_Var.get() + "Cannot_Anayse_PDF_List.out"  
+    positive_output_file = out_dir_Var.get() + "SCAN_RESULTS\\Positive_PDF_Results.out"
+    not_analysed_output_file = out_dir_Var.get() + "SCAN_RESULTS\\Cannot_Anayse_PDF_List.out"  
 
     # Function to search for PDF files recursively in a directory
     def find_pdf_files(directory):
@@ -162,8 +148,8 @@ def scan_pdf_doc():
     print("On to the next")
 
 def scan_powerpoint_doc():
-    positive_output_file = out_dir_Var.get() + "Positive_Powerpoint_Results.out"
-    not_analysed_output_file = out_dir_Var.get() + "Cannot_Anayse_Powerpoint_List.out"  
+    positive_output_file = out_dir_Var.get() + "SCAN_RESULTS\\Positive_Powerpoint_Results.out"
+    not_analysed_output_file = out_dir_Var.get() + "SCAN_RESULTS\\Cannot_Anayse_Powerpoint_List.out"  
     def find_powerpoint_files(directory):
         powerpoint_files = []
         for root, dirs, files in os.walk(directory):
@@ -272,7 +258,7 @@ def scan_txt_doc():
     print("On to the next")
 
 def find_all_other_files():
-    positive_output_file = out_dir_Var.get() + "\\RESULTS\\"
+    positive_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\"
     start_dir = start_dir_Var.get()
     print("finding all other files")
     # Lists for all the file types
@@ -430,6 +416,9 @@ def check_checkboxes():
         messagebox.showerror("Checkbox Status", "please check at least one checkbox")
         main_screen()
     else:
+        new_out_dir = out_dir_Var.get() + "\\SCAN_RESULTS\\"
+        if not os.path.exists(new_out_dir):
+            os.makedirs(new_out_dir)
         search_files()
 
 def check_user_input():
@@ -491,7 +480,7 @@ def main_screen():
     #show_pptx_results = ttk.Button(frm, text="Show pptx Results", command=)
     #show_pdf_results = ttk.Button(frm, text="Show pdf Results", command=)
     #show_xls_results = ttk.Button(frm, text="Show xls Results", command=)
-    search_btn = ttk.Button(frm, text="Search", command=search_files)
+    search_btn = ttk.Button(frm, text="Search", command=check_user_input)
     reset_btn = ttk.Button(frm, text="Reset", command=reset_values)
     quit_btn = ttk.Button(frm, text="Quit", command=root.destroy)
 
@@ -567,6 +556,6 @@ def main_screen():
     quit_btn.grid(column=10, row=10)
 
     root.mainloop()
-    
+
 if __name__ == "__main__":
     main_screen()
