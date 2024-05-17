@@ -49,8 +49,8 @@ def scan_all_docs():
 def scan_excel_doc():
     print("Scanning excel docs")
     #user input variables from GUI
-    positive_output_file = out_dir_Var.get() + "Positive_TXT_Results.txt"
-    not_analysed_output_file = out_dir_Var.get() + "Cannot_Anayse_TXT_List.txt"  
+    positive_output_file = out_dir_Var.get() + "Positive_TXT_Results.out"
+    not_analysed_output_file = out_dir_Var.get() + "Cannot_Anayse_TXT_List.out"  
 
     def find_text_files(directory):
         text_files = []
@@ -104,8 +104,8 @@ def scan_excel_doc():
 
 def scan_pdf_doc():
     print("Scanning pdf docs")
-    positive_output_file = out_dir_Var.get() + "Positive_PDF_Results.txt"
-    not_analysed_output_file = out_dir_Var.get() + "Cannot_Anayse_PDF_List.txt"  
+    positive_output_file = out_dir_Var.get() + "Positive_PDF_Results.out"
+    not_analysed_output_file = out_dir_Var.get() + "Cannot_Anayse_PDF_List.out"  
 
     # Function to search for PDF files recursively in a directory
     def find_pdf_files(directory):
@@ -162,8 +162,8 @@ def scan_pdf_doc():
     print("On to the next")
 
 def scan_powerpoint_doc():
-    positive_output_file = out_dir_Var.get() + "Positive_Powerpoint_Results.txt"
-    not_analysed_output_file = out_dir_Var.get() + "Cannot_Anayse_Powerpoint_List.txt"  
+    positive_output_file = out_dir_Var.get() + "Positive_Powerpoint_Results.out"
+    not_analysed_output_file = out_dir_Var.get() + "Cannot_Anayse_Powerpoint_List.out"  
     def find_powerpoint_files(directory):
         powerpoint_files = []
         for root, dirs, files in os.walk(directory):
@@ -272,7 +272,7 @@ def scan_txt_doc():
     print("On to the next")
 
 def find_all_other_files():
-    positive_output_file = out_dir_Var.get() + "Positive_PDF_Results.txt"
+    positive_output_file = out_dir_Var.get() + "\\RESULTS\\"
     start_dir = start_dir_Var.get()
     print("finding all other files")
     # Lists for all the file types
@@ -291,15 +291,106 @@ def find_all_other_files():
     interesting_extensions = [".jpeg", ".png", ".bmp", ".tiff", ".mp3", ".mp4", ".avi", ".mov", ".msg"]
     
     for i in interesting_extensions:
-        positive_output_file = positive_output_file + "i" + "_Files_Found.txt"
+        #positive_output_file = positive_output_file + i + "_Files_Found.out"
         targer_array = i.replace(".", "")
-        if not os.path.exists(positive_output_file):
-            with open(positive_output_file, "w") as file:
-                file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
+        #if not os.path.exists(positive_output_file):
+            #with open(positive_output_file, "w") as file:
+                #file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
         for root, dirs, files in os.walk(start_dir):
             for file in files:
                 if file.lower().endswith(i):
-                    targer_array.append(os.path.join(root, file))
+                    file_found = os.path.join(root, file)
+                    list_of_lists[targer_array].append(file_found)
+
+    if len(list_of_lists["jpeg"]) > 1:
+        file_list = positive_output_file + "jpegs_found.out"
+        if not os.path.exists(file_list):
+            with open(file_list, "w") as file:
+                file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
+
+        for i in list_of_lists["jpeg"]:
+            with open(file_list, "a") as file:
+                    file.write(i + "\n")
+
+    if len(list_of_lists["png"]) > 1:
+        file_list = positive_output_file + "png_found.out"
+        if not os.path.exists(file_list):
+            with open(file_list, "w") as file:
+                file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
+
+        for i in list_of_lists["png"]:
+            with open(file_list, "a") as file:
+                    file.write(i + "\n")
+
+    if len(list_of_lists["bmp"]) > 1:
+        file_list = positive_output_file + "bmp_found.out"
+        if not os.path.exists(file_list):
+            with open(file_list, "w") as file:
+                file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
+
+        for i in list_of_lists["bmp"]:
+            with open(file_list, "a") as file:
+                    file.write(i + "\n")
+    
+    if len(list_of_lists["tiff"]) > 1:
+        file_list = positive_output_file + "tiff_found.out"
+        if not os.path.exists(file_list):
+            with open(file_list, "w") as file:
+                file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
+
+        for i in list_of_lists["tiff"]:
+            with open(file_list, "a") as file:
+                    file.write(i + "\n")
+
+    if len(list_of_lists["mp3"]) > 1:
+        file_list = positive_output_file + "mp3_found.out"
+        if not os.path.exists(file_list):
+            with open(file_list, "w") as file:
+                file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
+
+        for i in list_of_lists["mp3"]:
+            with open(file_list, "a") as file:
+                    file.write(i + "\n")
+    
+    if len(list_of_lists["mp4"]) > 1:
+        file_list = positive_output_file + "mp4_found.out"
+        if not os.path.exists(file_list):
+            with open(file_list, "w") as file:
+                file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
+
+        for i in list_of_lists["mp4"]:
+            with open(file_list, "a") as file:
+                    file.write(i + "\n")
+    
+    if len(list_of_lists["avi"]) > 1:
+        file_list = positive_output_file + "avi_found.out"
+        if not os.path.exists(file_list):
+            with open(file_list, "w") as file:
+                file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
+
+        for i in list_of_lists["avi"]:
+            with open(file_list, "a") as file:
+                    file.write(i + "\n")
+
+    if len(list_of_lists["mov"]) > 1:
+        file_list = positive_output_file + "mov_found.out"
+        if not os.path.exists(file_list):
+            with open(file_list, "w") as file:
+                file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
+
+        for i in list_of_lists["mov"]:
+            with open(file_list, "a") as file:
+                    file.write(i + "\n")
+    
+    if len(list_of_lists["msg"]) > 1:
+        file_list = positive_output_file + "msg_found.out"
+        if not os.path.exists(file_list):
+            with open(file_list, "w") as file:
+                file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
+
+        for i in list_of_lists["msg"]:
+            with open(file_list, "a") as file:
+                    file.write(i + "\n")
 
     print("On to the next")
 
@@ -329,8 +420,9 @@ def search_files():
 
         if TXT_Button_Val.get() == 1:
             scan_txt_doc()
+
         if All_Other_Type_Button_Val.get() == 1:
-                find_all_other_files()
+            find_all_other_files()
 
 # Validate user selections and inputs 
 def check_checkboxes():
