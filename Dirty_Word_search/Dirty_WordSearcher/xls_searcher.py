@@ -1,65 +1,49 @@
 import os
-import sys
+import openpyxl
 
-# Function to search for text files recursively in a directory
-class txt_finder():
-    #user input variables from GUI
-    dirty_words_txt = sys.argv[1]
-    input_directory = sys.argv[2]
-    output_directory = sys.argv[3]
-    positive_output_file = output_directory + "Positive_TXT_Results.txt"
-    not_analysed_output_file = output_directory + "Cannot_Anayse_TXT_List.txt"  
+# pip install openpyxl
 
-    def find_text_files(directory):
-        text_files = []
-        for root, dirs, files in os.walk(directory):
-            for file in files:
-                if file.lower().endswith('.txt'):
-                    text_files.append(os.path.join(root, file))
-        return text_files
+# Function to search for Excel files recursively in a directory
+def find_excel_files(directory):
+    excel_files = []
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if file.lower().endswith('.xlsx'):
+                excel_files.append(os.path.join(root, file))
+    return excel_files
 
-    # Function to load dirty words from file
-    def load_dirty_words(file_path):
-        dirty_words = []
-        with open(file_path, 'r', encoding='utf-8') as file:  # Specify the encoding here
-            for line in file:
-                dirty_words.append(line.strip())
-        return dirty_words
+# Function to load dirty words from file
+def load_dirty_words(file_path):
+    dirty_words = []
+    with open(file_path, 'r') as file:
+        for line in file:
+            dirty_words.append(line.strip())
+    return dirty_words
 
-    # Search for text files on the entire computer
-    text_files = find_text_files(input_directory)
+# Search for Excel files on the entire computer
+computer_root = "C:\\"  # Change this to the root directory of your computer
+excel_files = find_excel_files(computer_root)
 
-    # Load dirty words from file
-    dirty_words = load_dirty_words(dirty_words_txt)
+# Load dirty words from file
+dirty_words_file = 'Dity_word.txt'  # Adjust this to the path of your dirty words file
+dirty_words = load_dirty_words(dirty_words_file)
 
-    #create output directories for results
-    if not os.path.exists(positive_output_file):
-        with open(positive_output_file, "w") as file:
-            file.write("THESE FILES HAVE ALL RETURNED A POSITIVE HIT\n------------\n------------\n")
-
-    if not os.path.exists(not_analysed_output_file):
-        with open(not_analysed_output_file, "w") as file:
-            file.write("THIS FILE WHERE NOT ABLE TO BE ANALYSED BY THE SCRIPT\n------------\n------------\n")
-
-    # Perform search in text files
-    for text_file in text_files:
-        try:
-            with open(text_file, 'r', encoding='utf-8') as file:  # Specify the encoding here
-                for line_num, line in enumerate(file, start=1):
-                    words_in_line = line.strip().split()
-                    for word in dirty_words:
-                        # Check if word matches exactly the length specified
-                        if any(len(word) == len(w) and word.lower() == w.lower() for w in words_in_line):
-                            pos_string = f"File: {text_file} - Line: {line_num} - Contains dirty word: {word}"
-                            #print(f"File: {pdf_file} - Page: {page_num} - Contains dirty word: {word}")
-                            with open(positive_output_file, "a") as file:
-                                file.write(pos_string + "\n")
-                            print()
-        except Exception as e:
-            not_string = f"Error processing {text_file}: {e}"
-            with open(not_analysed_output_file, "a") as file:
-                file.write(not_string + "\n")
-            
-
-while __name__ == "__main__":
-    txt_finder()
+# Perform search in Excel files
+for excel_file in excel_files:
+    try:
+        wb = openpyxl.load_workbook(excel_file)
+        # Iterate over each sheet in the workbook
+        for sheet_name in wb.sheetnames:
+            sheet = wb[sheet_name]
+            # Iterate over each cell in the sheet
+            for row in sheet.iter_rows():
+                for cell in row:
+                    if cell.value is not None and isinstance(cell.value, str):
+                        # Split the cell contents into words
+                        words = cell.value.lower().split()
+                        # Search for dirty words in the split words
+                        for word in words:
+                            if word in dirty_words:
+                                print(f"File: {excel_file} - Sheet: {sheet_name} - Cell: {cell.coordinate} - Contains dirty word: {word}")
+    except Exception as e:
+        print(f"Error processing {excel_file}: {e}")
