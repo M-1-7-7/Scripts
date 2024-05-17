@@ -56,6 +56,7 @@ computer_root = "C:\\"  # Replace with desired directory
 
 powerpoint_files = find_powerpoint_files(computer_root)
 print(dirty_words)
+
 for powerpoint_file in powerpoint_files:
   try:
     prs = Presentation(powerpoint_file)
@@ -65,6 +66,7 @@ for powerpoint_file in powerpoint_files:
       for shape in slide.shapes:
         if hasattr(shape, "text"):
           shape_text = shape.text.lower()
+          # Check for individual words
           for word in dirty_words:
             if word in shape_text and len(shape_text.split()) >= len(word):
               start_index = shape_text.find(word)
@@ -73,6 +75,14 @@ for powerpoint_file in powerpoint_files:
                  (end_index == len(shape_text) or shape_text[end_index].isspace()):
                 print(f"File: {powerpoint_file} - Slide: {slide_number} - Contains dirty word: {word}")
                 break  # Exit inner loop after finding a match
+
+          # Check for entire sentences (alternative approach)
+          # This loop iterates through each dirty word (sentence) in the list
+          for dirty_sentence in dirty_words:
+            if dirty_sentence in shape_text:
+              print(f"File: {powerpoint_file} - Slide: {slide_number} - Contains dirty sentence: {dirty_sentence}")
+              break  # Exit inner loop after finding a match
+
       slide_number += 1  # Increment slide number for the next slide
 
   except PermissionError as e:
