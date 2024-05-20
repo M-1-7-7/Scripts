@@ -634,7 +634,7 @@ def search_files():
 
 # Validate user selections and inputs 
 def check_checkboxes():
-    if All_Document_Type_Button_Val.get() == 0 and PDF_Button_Val.get() == 0 and PowerPoint_Button_Val.get() == 0 and Doc_Button_Val.get() == 0 and TXT_Button_Val.get() == 0 and Excel_Button_Val.get() == 0 and All_Other_Type_Button_Val.get == 0:
+    if All_Document_Type_Button_Val.get() == 0 and PDF_Button_Val.get() == 0 and PowerPoint_Button_Val.get() == 0 and Doc_Button_Val.get() == 0 and TXT_Button_Val.get() == 0 and Excel_Button_Val.get() == 0 and All_Other_Type_Button_Val.get() == 0:
         messagebox.showerror("Checkbox Status", "please check at least one checkbox")
         main_screen()
     else:
@@ -770,8 +770,8 @@ def main_screen():
     All_PowerPoint_Button.grid(row=4, sticky=W)
     All_Word_Button.grid(row=5, sticky=W)
     All_TXT_Button.grid(row=6, sticky=W)
-    All_Documet_Type_Button.grid(row=7, sticky=W)
-    All_Other_Type_Button.grid(row=8, sticky=W)
+    All_Other_Type_Button.grid(row=7, sticky=W)
+    All_Documet_Type_Button.grid(row=8, sticky=W)
 
     search_btn.grid(column=8, row=10)
     reset_btn.grid(column=9, row=10)
