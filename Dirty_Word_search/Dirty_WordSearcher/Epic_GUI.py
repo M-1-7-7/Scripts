@@ -285,8 +285,8 @@ def scan_txt_doc():
     with open(DW_Var.get(), 'r') as file:
         lines = file.readlines()
         for line in lines:
-            Dirty_words.append(line.strip())
-    
+            Dirty_words.append(line.strip().lower())
+
     findings_summary = defaultdict(lambda: defaultdict(int))
 
     #create output directories/files for results
@@ -355,7 +355,7 @@ def scan_txt_doc():
                 matches = re.findall(word_pattern, file_text)
                 if matches:
                     findings_summary[(file_path, 'Text')][word] += len(matches)
-                
+                print(matches)
         except FileNotFoundError:
             neg_string = f"Error: File not found {file_path}"
             with open(not_analysed_output_file, "a") as file:
