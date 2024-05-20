@@ -280,6 +280,25 @@ def scan_txt_doc():
     positive_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Positive_TXT_Results.out"
     not_analysed_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Cannot_Anayse_TXT_List.out"  
     
+    # load dirty words from file into Dirty_words list
+    Dirty_words = []
+    with open(DW_Var.get(), 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            Dirty_words.append(line.strip())
+    
+    findings_summary = defaultdict(lambda: defaultdict(int))
+
+    #create output directories/files for results
+    if not os.path.exists(positive_output_file):
+        with open(positive_output_file, "w") as file:
+            file.write("THESE FILES HAVE ALL RETURNED A POSITIVE HIT\n------------\n------------\n")
+
+    if not os.path.exists(not_analysed_output_file):
+        with open(not_analysed_output_file, "w") as file:
+            file.write("THIS FILE WHERE NOT ABLE TO BE ANALYSED BY THE SCRIPT\n------------\n------------\n")
+
+    # This funtion will be called and pass through the files nested within the target directory for files with txt extension
     def find_text_files(directory):
         """
         This function finds all text files (files with .txt extension)
@@ -298,31 +317,7 @@ def scan_txt_doc():
                     text_files.append(os.path.join(root, file))
         return text_files
 
-    # Create findings lists
-    #create output directories for results
-    if not os.path.exists(positive_output_file):
-        with open(positive_output_file, "w") as file:
-            file.write("THESE FILES HAVE ALL RETURNED A POSITIVE HIT\n------------\n------------\n")
-
-    if not os.path.exists(not_analysed_output_file):
-        with open(not_analysed_output_file, "w") as file:
-            file.write("THIS FILE WHERE NOT ABLE TO BE ANALYSED BY THE SCRIPT\n------------\n------------\n")
-
-
-    # Function to load dirty words from file
-    Dirty_words = []
-    with open(DW_Var.get(), 'r') as file:
-        lines = file.readlines()
-        for line in lines:
-            Dirty_words.append(line.strip())
-
-    # Specify directory path (consider user input or relative paths)
-
-    text_files = find_text_files(start_dir_Var.get())
-
-    # Dictionary to store findings for summary
-    findings_summary = defaultdict(lambda: defaultdict(int))
-
+    # Read the contents of txt files discovered
     def read_file(file_path):
         """
         Attempt to read a file with multiple encodings.
@@ -342,6 +337,7 @@ def scan_txt_doc():
                 continue
         return None
 
+    # Identify matches to words in Dirty_word list
     def process_text_file(file_path):
         """
         Process text files to find dirty words.
@@ -358,9 +354,8 @@ def scan_txt_doc():
                 word_pattern = r'\b' + re.escape(word) + r'\b'
                 matches = re.findall(word_pattern, file_text)
                 if matches:
-                    pos_string = f"File: {file_path} - Text: {word} {len(matches)}"
-                    with open(positive_output_file, "a") as file:
-                        file.write(pos_string + "\n")
+                    findings_summary[(file_path, 'Text')][word] += len(matches)
+                
         except FileNotFoundError:
             neg_string = f"Error: File not found {file_path}"
             with open(not_analysed_output_file, "a") as file:
@@ -374,9 +369,18 @@ def scan_txt_doc():
             with open(not_analysed_output_file, "a") as file:
                 file.write(neg_string + "\n")
 
+    # start searching for txt files
+    text_files = find_text_files(start_dir_Var.get())
+
+    # Loop through files in txt_files list
     for text_file in text_files:
         process_text_file(text_file)
-        
+    
+    for (file, source), words in findings_summary.items():
+        words_summary = ', '.join([f"{word}: {count}" for word, count in words.items()])
+        pos_strings = f"File: {file} - {source} - Contains dirty words - {words_summary}"
+        with open(positive_output_file, "a") as file:
+                        file.write(pos_strings + "\n")
 def find_all_other_files():
     positive_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Other_Files"
     start_dir = start_dir_Var.get()
