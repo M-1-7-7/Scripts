@@ -1,11 +1,11 @@
 # Overview
-This is a dirty word searcher that scans the file system and identifies specified words in documentation.
+This is a word searcher that scans the file system and identifies specified words in documentation.
 
 ## File Types
 - PDF
-- PowerPoint (PPT)
-- Word Documents (DOC)
-- Excel Spreadsheets (XLS)
+- PowerPoint (PPT, PPTX)
+- Word Documents (DOC, DOCX)
+- Excel Spreadsheets (XLS, XLSX)
 
 ## Todo List
 
