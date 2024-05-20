@@ -172,24 +172,14 @@ def scan_pdf_doc():
     no_txt_pdf_files = out_dir_Var.get() + "\\SCAN_RESULTS\\pdf_files_without_text.out"
     not_analysed_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Cannot_Anayse_PDF_List.out"  
 
-    # Function to search for PDF files recursively in a directory
-    def find_pdf_files(directory):
-        pdf_files = []
-        for root, dirs, files in os.walk(directory):
-            for file in files:
-                if file.lower().endswith('.pdf'):
-                    pdf_files.append(os.path.join(root, file))
-        return pdf_files
-
     # Load dirty words from file
     Dirty_words = []
     with open(DW_Var.get(), 'r') as file:
         lines = file.readlines()
         for line in lines:
-            Dirty_words.append(line.strip())
+            Dirty_words.append(line.strip().lower())
 
-    # Search for PDF files on the entire computer
-    pdf_files = find_pdf_files(start_dir_Var.get())
+    findings_summary = defaultdict(lambda: defaultdict(int))
 
     #create output directories for results
     if not os.path.exists(positive_output_file):
@@ -204,11 +194,36 @@ def scan_pdf_doc():
         with open(not_analysed_output_file, "w") as file:
             file.write("THIS FILE WHERE NOT ABLE TO BE ANALYSED BY THE SCRIPT\n------------\n------------\n")
 
-    # Perform search in PDF files
-    for pdf_file in pdf_files:
+    # Function to search for PDF files recursively in a directory
+    def find_pdf_files(directory):
+        """
+        This function finds all text files (files with .pdf extension)
+        within the specified directory and its subdirectories.
+
+        Args:
+            directory (str): Path to the directory to search.
+
+        Returns:
+            list: List containing the full paths to all text files found.
+        """
+        pdf_files = []
+        for root, dirs, files in os.walk(directory):
+            for file in files:
+                if file.lower().endswith('.pdf'):
+                    pdf_files.append(os.path.join(root, file))
+        return pdf_files
+
+    def process_pdf_file(file_path):
+        """
+        Process text files to find dirty words.
+
+        Args:
+            file_path (str): Path to the text file to process.
+        """
+        # Perform search in PDF files
         try:
             # Open the PDF file
-            with open(pdf_file, "rb") as pdf_files:
+            with open(pdf_file, "rb"):
                 reader = PyPDF2.PdfReader(pdf_file)
                     # Iterate over each page and extract text
                 for page_num, page in enumerate(reader.pages, start=1):
@@ -218,11 +233,10 @@ def scan_pdf_doc():
                     if len(text) > 0:
                         for word in Dirty_words:
                             for text_word in words:
-                                if len(word) == len(text_word) and word.lower() == text_word.lower():
-                                    pos_string = f"File: {pdf_file} - Page: {page_num} - Contains dirty word: {word}"
-                                    with open(positive_output_file, "a") as file:
-                                        file.write(pos_string + "\n")
-                                    break
+                                word_pattern = r'\b' + re.escape(word) + r'\b'
+                                matches = re.findall(word_pattern, text_word)
+                                if matches:
+                                    findings_summary[(file_path, 'Text')][word] += len(matches)
                     else:
                         print("This is a scanned Document")
                         string = f"File: {pdf_file}"
@@ -233,7 +247,19 @@ def scan_pdf_doc():
             with open(not_analysed_output_file, "a") as file:
                 file.write(not_string + "\n")
 
-    print("On to the next")
+    # Search for PDF files on the entire computer
+    pdf_files = find_pdf_files(start_dir_Var.get())
+
+    # Loop through files in txt_files list
+    for pdf_file in pdf_files:
+        process_pdf_file(pdf_file)
+    
+    for (file, source), words in findings_summary.items():
+        words_summary = ', '.join([f"{word}: {count}" for word, count in words.items()])
+        pos_strings = f"File: {file} - {source} - Contains dirty words - {words_summary}"
+        with open(positive_output_file, "a") as file:
+            file.write(pos_strings + "\n")
+    
 
 def scan_powerpoint_doc():
     positive_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Positive_Powerpoint_Results.out"
