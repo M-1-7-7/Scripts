@@ -90,8 +90,9 @@ def scan_excel_doc():
 
 def scan_pdf_doc():
     print("Scanning pdf docs")
-    positive_output_file = out_dir_Var.get() + "SCAN_RESULTS\\Positive_PDF_Results.out"
-    not_analysed_output_file = out_dir_Var.get() + "SCAN_RESULTS\\Cannot_Anayse_PDF_List.out"  
+    positive_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Positive_PDF_Results.out"
+    scanned_pdf_files = out_dir_Var.get() + "\\SCAN_RESULTS\\Scanned_pdf_files.out"
+    not_analysed_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Cannot_Anayse_PDF_List.out"  
 
     # Function to search for PDF files recursively in a directory
     def find_pdf_files(directory):
@@ -118,6 +119,10 @@ def scan_pdf_doc():
         with open(positive_output_file, "w") as file:
             file.write("THESE FILES HAVE ALL RETURNED A POSITIVE HIT\n------------\n------------\n")
 
+    if not os.path.exists(scanned_pdf_files):
+        with open(scanned_pdf_files, "w") as file:
+            file.write("THESE FILES ARE SCANNED FILES AND THERFORE CANNOT BE ANALYSED BY THE SCRIPT\n------------\n------------\n")
+
     if not os.path.exists(not_analysed_output_file):
         with open(not_analysed_output_file, "w") as file:
             file.write("THIS FILE WHERE NOT ABLE TO BE ANALYSED BY THE SCRIPT\n------------\n------------\n")
@@ -126,20 +131,26 @@ def scan_pdf_doc():
     for pdf_file in pdf_files:
         try:
             # Open the PDF file
-            reader = PyPDF2.PdfReader(pdf_file)
-            # Iterate over each page and extract text
-            for page_num, page in enumerate(reader.pages, start=1):
-                text = page.extract_text()
-                # Split text into words and search for dirty words
-                words = text.split()
-                for word in Dirty_words:
-                    for text_word in words:
-                        if len(word) == len(text_word) and word.lower() == text_word.lower():
-                            pos_string = f"File: {pdf_file} - Page: {page_num} - Contains dirty word: {word}"
-                            #print(f"File: {pdf_file} - Page: {page_num} - Contains dirty word: {word}")
-                            with open(positive_output_file, "a") as file:
-                                file.write(pos_string + "\n")
-                            break  # Move to the next word after finding the first dirty word
+            with open(pdf_file, "rb") as pdf_files:
+                reader = PyPDF2.PdfReader(pdf_file)
+                    # Iterate over each page and extract text
+                for page_num, page in enumerate(reader.pages, start=1):
+                    text = page.extract_text()
+                    # Split text into words and search for dirty words
+                    words = text.split()
+                    if len(text) > 0:
+                        for word in Dirty_words:
+                            for text_word in words:
+                                if len(word) == len(text_word) and word.lower() == text_word.lower():
+                                    pos_string = f"File: {pdf_file} - Page: {page_num} - Contains dirty word: {word}"
+                                    with open(positive_output_file, "a") as file:
+                                        file.write(pos_string + "\n")
+                                    break  # Move to the next word after finding the first dirty word
+                    else:
+                        print("This is a scanned Document")
+                        string = f"File: {pdf_file}"
+                        with open(scanned_pdf_files, "a") as file:
+                            file.write(string + "\n")
         except Exception as e:
             not_string = f"Error processing {pdf_file}: {e}"
             with open(not_analysed_output_file, "a") as file:
@@ -183,11 +194,12 @@ def scan_powerpoint_doc():
                     for shape in slide.shapes:
                         if hasattr(shape, "text"):
                             shape_text = shape.text.lower()
-                            if word.lower() in shape_text:
+                            dw = word.lower()
+                            if dw in shape_text and dw.len() == shape_text.len():
                                 pos_string = f"File: {powerpoint_file} - Contains dirty word: {word}"
                                 with open(positive_output_file, "a") as file:
                                     file.write(pos_string + "\n")
-                                break  
+                                break
         except PermissionError as e:
             if 'Package not found' not in str(e):
                 not_string = f"Insufficient system privileges to read contents of {powerpoint_file}"
