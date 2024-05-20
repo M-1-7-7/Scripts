@@ -37,6 +37,10 @@ All_Other_Type_Button_Val = IntVar()
 All_Document_Type_Button_Val = IntVar() 
 # Other variables
 script_directory = os.path.dirname(os.path.abspath(__file__)) 
+# Global variables
+global DW_Var_stripped
+global out_dir_Var_stripped
+global start_dir_Var_stripped
 
 # Functions that will execute specificly to the checkboxes ticked by the user
 def scan_all_docs():
@@ -662,21 +666,33 @@ def check_checkboxes():
 
 def check_user_input():
     user_input_bad = ""
+    global start_dir_Var_stripped
+    global out_dir_Var_stripped
+    global DW_Var_stripped
+    
+    # Stip user inputs
+    start_dir_Var_stripped = start_dir_Var.get()
+    start_dir_Var_stripped = start_dir_Var_stripped.strip()
+    out_dir_Var_stripped = out_dir_Var.get()
+    out_dir_Var_stripped = out_dir_Var_stripped.strip()
+    DW_Var_stripped = DW_Var.get()
+    DW_Var_stripped = DW_Var_stripped.strip()
+
     # check if directory exists
-    if not os.path.exists(start_dir_Var.get()): 
+    if not os.path.exists(start_dir_Var_stripped):
         user_input_bad += "!!!Please enter a valid STARTING DIRECTORY!!!\n"
     else:
         print("starting directory is existing :)\n")
 
-    if not os.path.exists(out_dir_Var.get()): 
+    if not os.path.exists(out_dir_Var_stripped):
         user_input_bad += "!!!Please enter a valid OUTPUT DIRECTORY!!!\n"
     else:
        print("Output directory is existing :)\n")
 
     # Check if the file is writable using os.access()
-    if DW_Var.get().endswith('.txt'):
-        if os.access(DW_Var.get(), os.W_OK):
-            print(f"File '{DW_Var.get()}' is writable.") 
+    if DW_Var_stripped.endswith('.txt'):
+        if os.access(DW_Var_stripped, os.W_OK):
+            print(f"File '{DW_Var_stripped}' is writable.") 
         elif FileNotFoundError:
             user_input_bad += "!!!Dirty Word File NOT FOUND!!!\n"
         elif PermissionError:
