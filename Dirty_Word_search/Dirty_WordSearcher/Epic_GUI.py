@@ -51,11 +51,16 @@ def scan_all_docs():
     scan_word_doc()
     scan_txt_doc()
     find_all_other_files()
+
 # UPDATE THIS ONES
 def scan_excel_doc():
-    print("Scanning excel docs")
-    positive_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Positive_Excel_Results.out"
-    not_analysed_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Cannot_Anayse_Excel_List.out"  
+    global DW_Var_stripped
+    global out_dir_Var_stripped
+    global start_dir_Var_stripped
+
+    positive_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Positive_Excel_Results.out"
+    not_analysed_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Cannot_Anayse_Excel_List.out"  
+    
     # Function to search for Excel files recursively in a directory
     def find_excel_files(directory):
         excel_files = []
@@ -67,13 +72,13 @@ def scan_excel_doc():
 
     # Load dirty words from file
     Dirty_words = []
-    with open(DW_Var.get(), 'r') as file:
+    with open(DW_Var_stripped, 'r') as file:
         lines = file.readlines()
         for line in lines:
             Dirty_words.append(line.strip().lower())
 
     # Search for Excel files on the entire computer
-    excel_files = find_excel_files(start_dir_Var.get())
+    excel_files = find_excel_files(start_dir_Var_stripped)
     
     #create output directories for results
     if not os.path.exists(positive_output_file):
@@ -171,14 +176,17 @@ def scan_excel_doc():
             file.write(pos_strings + "\n")
 
 def scan_pdf_doc():
-    print("Scanning pdf docs")
-    positive_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Positive_PDF_Results.out"
-    no_txt_pdf_files = out_dir_Var.get() + "\\SCAN_RESULTS\\pdf_files_without_text.out"
-    not_analysed_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Cannot_Anayse_PDF_List.out"  
+    global DW_Var_stripped
+    global out_dir_Var_stripped
+    global start_dir_Var_stripped   
+
+    positive_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Positive_PDF_Results.out"
+    no_txt_pdf_files = out_dir_Var_stripped + "\\SCAN_RESULTS\\pdf_files_without_text.out"
+    not_analysed_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Cannot_Anayse_PDF_List.out"  
 
     # Load dirty words from file
     Dirty_words = []
-    with open(DW_Var.get(), 'r') as file:
+    with open(DW_Var_stripped, 'r') as file:
         lines = file.readlines()
         for line in lines:
             Dirty_words.append(line.strip().lower())
@@ -252,7 +260,7 @@ def scan_pdf_doc():
                 file.write(not_string + "\n")
 
     # Search for PDF files on the entire computer
-    pdf_files = find_pdf_files(start_dir_Var.get())
+    pdf_files = find_pdf_files(start_dir_Var_stripped)
 
     # Loop through files in txt_files list
     for pdf_file in pdf_files:
@@ -264,10 +272,13 @@ def scan_pdf_doc():
         with open(positive_output_file, "a") as file:
             file.write(pos_strings + "\n")
     
-
 def scan_powerpoint_doc():
-    positive_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Positive_Powerpoint_Results.out"
-    not_analysed_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Cannot_Anayse_Powerpoint_List.out"  
+    global DW_Var_stripped
+    global out_dir_Var_stripped
+    global start_dir_Var_stripped 
+
+    positive_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Positive_Powerpoint_Results.out"
+    not_analysed_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Cannot_Anayse_Powerpoint_List.out"  
     def find_powerpoint_files(directory):
         powerpoint_files = []
         for root, dirs, files in os.walk(directory):
@@ -277,12 +288,12 @@ def scan_powerpoint_doc():
         return powerpoint_files
 
     Dirty_words = []
-    with open(DW_Var.get(), 'r') as file:
+    with open(DW_Var_stripped, 'r') as file:
         lines = file.readlines()
         for line in lines:
             Dirty_words.append(line.strip().lower())
 
-    powerpoint_files = find_powerpoint_files(start_dir_Var.get())
+    powerpoint_files = find_powerpoint_files(start_dir_Var_stripped)
 
     #create output directories for results
     if not os.path.exists(positive_output_file):
@@ -338,11 +349,12 @@ def scan_powerpoint_doc():
 
 # Create error handling for scan_word_doc function
 def scan_word_doc():
-    #script_loc = script_directory + "\\word_searcher.py"
-    print("Scanning word docs")
+    global DW_Var_stripped
+    global out_dir_Var_stripped
+    global start_dir_Var_stripped 
     #user input variables from GUI
-    new_out_dir = out_dir_Var.get() + "\\SCAN_RESULTS\\Positive_Word_Results"
-    not_analysed_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Cannot_Anayse_Word_List"  
+    new_out_dir = out_dir_Var_stripped + "\\SCAN_RESULTS\\Positive_Word_Results"
+    not_analysed_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Cannot_Anayse_Word_List"  
 
     # Function to search for Word files recursively in a directory
     def find_word_files(directory):
@@ -355,7 +367,7 @@ def scan_word_doc():
 
     #Create Dirty Word list from the dirty word input file from user
     Dirty_words = []
-    with open(DW_Var.get(), 'r') as file:
+    with open(DW_Var_stripped, 'r') as file:
         lines = file.readlines()
         for i in lines:
             Dirty_words.append(i.strip())
@@ -365,7 +377,7 @@ def scan_word_doc():
         os.makedirs(new_out_dir)
 
     # Get a list of Word files in the input directory
-    word_files = find_word_files(start_dir_Var.get())
+    word_files = find_word_files(start_dir_Var_stripped)
 
     # Process each Word file
     for eachfile in word_files:
@@ -390,13 +402,16 @@ def scan_word_doc():
     print("finished scan")
 
 def scan_txt_doc():
-    print("scanning txt docs")
-    positive_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Positive_TXT_Results.out"
-    not_analysed_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Cannot_Anayse_TXT_List.out"  
+    global DW_Var_stripped
+    global out_dir_Var_stripped
+    global start_dir_Var_stripped 
+
+    positive_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Positive_TXT_Results.out"
+    not_analysed_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Cannot_Anayse_TXT_List.out"  
     
     # load dirty words from file into Dirty_words list
     Dirty_words = []
-    with open(DW_Var.get(), 'r') as file:
+    with open(DW_Var_stripped, 'r') as file:
         lines = file.readlines()
         for line in lines:
             Dirty_words.append(line.strip().lower())
@@ -485,7 +500,7 @@ def scan_txt_doc():
                 file.write(neg_string + "\n")
 
     # start searching for txt files
-    text_files = find_text_files(start_dir_Var.get())
+    text_files = find_text_files(start_dir_Var_stripped)
 
     # Loop through files in txt_files list
     for text_file in text_files:
@@ -496,9 +511,14 @@ def scan_txt_doc():
         pos_strings = f"File: {file} - {source} - Contains dirty words - {words_summary}"
         with open(positive_output_file, "a") as file:
                         file.write(pos_strings + "\n")
+
 def find_all_other_files():
-    positive_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Other_Files"
-    start_dir = start_dir_Var.get()
+    global DW_Var_stripped
+    global out_dir_Var_stripped
+    global start_dir_Var_stripped
+
+    positive_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Other_Files"
+    start_dir = start_dir_Var_stripped
     print("finding all other files")
     # Lists for all the file types
     list_of_lists = {
@@ -620,7 +640,11 @@ def find_all_other_files():
 
 # Functions from GUI Buttons
 def search_files():
-    output_dir = out_dir_Var.get() + "\\SCAN_RESULTS"
+    global DW_Var_stripped
+    global out_dir_Var_stripped
+    global start_dir_Var_stripped
+
+    output_dir = out_dir_Var_stripped + "\\SCAN_RESULTS"
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
     # Ensure the files and Dirs entered by user are going to work
@@ -655,11 +679,15 @@ def search_files():
 
 # Validate user selections and inputs 
 def check_checkboxes():
+    global start_dir_Var_stripped
+    global out_dir_Var_stripped
+    global DW_Var_stripped
+
     if All_Document_Type_Button_Val.get() == 0 and PDF_Button_Val.get() == 0 and PowerPoint_Button_Val.get() == 0 and Doc_Button_Val.get() == 0 and TXT_Button_Val.get() == 0 and Excel_Button_Val.get() == 0 and All_Other_Type_Button_Val.get() == 0:
         messagebox.showerror("Checkbox Status", "please check at least one checkbox")
         main_screen()
     else:
-        new_out_dir = out_dir_Var.get() + "\\SCAN_RESULTS\\"
+        new_out_dir = out_dir_Var_stripped + "\\SCAN_RESULTS\\"
         if not os.path.exists(new_out_dir):
             os.makedirs(new_out_dir)
         search_files()
@@ -731,10 +759,6 @@ def main_screen():
     # Radio Buttons for file types
 
     # Function Buttons
-    #show_doc_results = ttk.Button(frm, text="Show Doc Results", command=)
-    #show_pptx_results = ttk.Button(frm, text="Show pptx Results", command=)
-    #show_pdf_results = ttk.Button(frm, text="Show pdf Results", command=)
-    #show_xls_results = ttk.Button(frm, text="Show xls Results", command=)
     search_btn = ttk.Button(frm, text="Search", command=check_user_input)
     reset_btn = ttk.Button(frm, text="Reset", command=reset_values)
     quit_btn = ttk.Button(frm, text="Quit", command=root.destroy)
