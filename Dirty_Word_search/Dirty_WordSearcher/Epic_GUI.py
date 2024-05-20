@@ -3,6 +3,7 @@ import PyPDF2
 import os
 import openpyxl
 import re
+import xlrd
 
 import tkinter
 from tkinter import *
@@ -56,7 +57,7 @@ def scan_excel_doc():
         excel_files = []
         for root, dirs, files in os.walk(directory):
             for file in files:
-                if file.lower().endswith('.xlsx'):
+                if file.lower().endswith(('.xls', '.xlsx')):
                     excel_files.append(os.path.join(root, file))
         return excel_files
 
@@ -65,7 +66,7 @@ def scan_excel_doc():
     with open(DW_Var.get(), 'r') as file:
         lines = file.readlines()
         for line in lines:
-            Dirty_words.append(line.strip())
+            Dirty_words.append(line.strip().lower())
 
     # Search for Excel files on the entire computer
     excel_files = find_excel_files(start_dir_Var.get())
@@ -78,26 +79,92 @@ def scan_excel_doc():
     if not os.path.exists(not_analysed_output_file):
         with open(not_analysed_output_file, "w") as file:
             file.write("THIS FILE WHERE NOT ABLE TO BE ANALYSED BY THE SCRIPT\n------------\n------------\n")
+    
+    # Dictionary to store findings for summary
+    findings_summary = defaultdict(lambda: defaultdict(int))
 
-    # Perform search in Excel files
+    def process_xlsx(file_path):
+        """
+        Process .xlsx files to find dirty words in all cells and comments.
+
+        Args:
+            file_path (str): Path to the .xlsx file to process.
+        """
+        try:
+            workbook = openpyxl.load_workbook(file_path, data_only=True)
+        except openpyxl.utils.exceptions.InvalidFileException:
+            print(f"Error: Invalid .xlsx file {file_path}")
+            return
+        except Exception as e:
+            print(f"Error opening .xlsx file {file_path}: {e}")
+            return
+
+        for sheet in workbook.sheetnames:
+            worksheet = workbook[sheet]
+            # Process cell text
+            for row in worksheet.iter_rows():
+                for cell in row:
+                    if cell.value and isinstance(cell.value, str):
+                        cell_text = cell.value.lower()
+                        for word in Dirty_words:
+                            word_pattern = r'\b' + re.escape(word) + r'\b'
+                            matches = re.findall(word_pattern, cell_text)
+                            if matches:
+                                findings_summary[(file_path, 'Cell Text')][word] += len(matches)
+                    # Process comments
+                    if cell.comment and cell.comment.text:
+                        comment_text = cell.comment.text.lower()
+                        for word in Dirty_words:
+                            word_pattern = r'\b' + re.escape(word) + r'\b'
+                            matches = re.findall(word_pattern, comment_text)
+                            if matches:
+                                findings_summary[(file_path, 'Comments')][word] += len(matches)
+
+    def process_xls(file_path):
+        """
+        Process .xls files to find dirty words in all cells.
+
+        Args:
+            file_path (str): Path to the .xls file to process.
+        """
+        try:
+            workbook = xlrd.open_workbook(file_path)
+        except xlrd.biffh.XLRDError:
+            print(f"Error: Invalid .xls file {file_path}")
+            return
+        except Exception as e:
+            print(f"Error opening .xls file {file_path}: {e}")
+            return
+
+        for sheet in workbook.sheets():
+            for row in range(sheet.nrows):
+                for col in range(sheet.ncols):
+                    cell_value = sheet.cell_value(row, col)
+                    if isinstance(cell_value, str):
+                        cell_text = cell_value.lower()
+                        for word in Dirty_words:
+                            word_pattern = r'\b' + re.escape(word) + r'\b'
+                            matches = re.findall(word_pattern, cell_text)
+                            if matches:
+                                findings_summary[(file_path, 'Cell Text')][word] += len(matches)
+
     for excel_file in excel_files:
         try:
-            wb = openpyxl.load_workbook(excel_file)
-            # Iterate over each sheet in the workbook
-            for sheet_name in wb.sheetnames:
-                sheet = wb[sheet_name]
-                # Iterate over each cell in the sheet
-                for row in sheet.iter_rows():
-                    for cell in row:
-                        if cell.value is not None and isinstance(cell.value, str):
-                            # Split the cell contents into words
-                            words = cell.value.lower().split()
-                            # Search for dirty words in the split words
-                            for word in words:
-                                if word in Dirty_words:
-                                    print(f"File: {excel_file} - Sheet: {sheet_name} - Cell: {cell.coordinate} - Contains dirty word: {word}")
+            if excel_file.lower().endswith('.xlsx'):
+                process_xlsx(excel_file)
+            elif excel_file.lower().endswith('.xls'):
+                process_xls(excel_file)
+        except PermissionError:
+            print(f"Permission error processing {excel_file}")
         except Exception as e:
-            print(f"Error processing {excel_file}: {e}")
+            print(f"Unexpected error processing {excel_file}: {e}")
+
+    # Print summary of findings
+    for (file, source), words in findings_summary.items():
+        words_summary = ', '.join([f"{word}: {count}" for word, count in words.items()])
+        pos_strings = f"File: {file} - {source} - Contains dirty words - {words_summary}"
+        with open(positive_output_file, "a") as file:
+            file.write(pos_strings + "\n")
 
 def scan_pdf_doc():
     print("Scanning pdf docs")
