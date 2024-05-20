@@ -2,6 +2,7 @@ import subprocess
 import PyPDF2 
 import os
 import openpyxl
+import re
 
 import tkinter
 from tkinter import *
@@ -13,6 +14,7 @@ from spire.doc.common import *
 from pptx import Presentation
 from pptx.exc import PackageNotFoundError
 from datetime import datetime
+from collections import defaultdict
 
 # Window Configuration
 root = Tk()
@@ -24,9 +26,6 @@ frm.grid()
 DW_Var=tkinter.StringVar()
 start_dir_Var=tkinter.StringVar()
 out_dir_Var=tkinter.StringVar()
-dirty_words_txt = DW_Var.get()
-begin_search_dir = start_dir_Var.get()
-output_search_dir = out_dir_Var.get()
 # buttons states
 Excel_Button_Val = IntVar() 
 PDF_Button_Val = IntVar()  
@@ -47,8 +46,11 @@ def scan_all_docs():
     scan_word_doc()
     scan_txt_doc()
     find_all_other_files()
-
+# UPDATE THIS ONES
 def scan_excel_doc():
+    print("Scanning excel docs")
+    positive_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Positive_Excel_Results.out"
+    not_analysed_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Cannot_Anayse_Excel_List.out"  
     # Function to search for Excel files recursively in a directory
     def find_excel_files(directory):
         excel_files = []
@@ -67,6 +69,15 @@ def scan_excel_doc():
 
     # Search for Excel files on the entire computer
     excel_files = find_excel_files(start_dir_Var.get())
+    
+    #create output directories for results
+    if not os.path.exists(positive_output_file):
+        with open(positive_output_file, "w") as file:
+            file.write("THESE FILES HAVE ALL RETURNED A POSITIVE HIT\n------------\n------------\n")
+
+    if not os.path.exists(not_analysed_output_file):
+        with open(not_analysed_output_file, "w") as file:
+            file.write("THIS FILE WHERE NOT ABLE TO BE ANALYSED BY THE SCRIPT\n------------\n------------\n")
 
     # Perform search in Excel files
     for excel_file in excel_files:
@@ -91,7 +102,7 @@ def scan_excel_doc():
 def scan_pdf_doc():
     print("Scanning pdf docs")
     positive_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Positive_PDF_Results.out"
-    scanned_pdf_files = out_dir_Var.get() + "\\SCAN_RESULTS\\Scanned_pdf_files.out"
+    no_txt_pdf_files = out_dir_Var.get() + "\\SCAN_RESULTS\\pdf_files_without_text.out"
     not_analysed_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Cannot_Anayse_PDF_List.out"  
 
     # Function to search for PDF files recursively in a directory
@@ -111,7 +122,6 @@ def scan_pdf_doc():
             Dirty_words.append(line.strip())
 
     # Search for PDF files on the entire computer
-    #computer_root = "C:\\"  # Change this to the root directory of your computer
     pdf_files = find_pdf_files(start_dir_Var.get())
 
     #create output directories for results
@@ -119,9 +129,9 @@ def scan_pdf_doc():
         with open(positive_output_file, "w") as file:
             file.write("THESE FILES HAVE ALL RETURNED A POSITIVE HIT\n------------\n------------\n")
 
-    if not os.path.exists(scanned_pdf_files):
-        with open(scanned_pdf_files, "w") as file:
-            file.write("THESE FILES ARE SCANNED FILES AND THERFORE CANNOT BE ANALYSED BY THE SCRIPT\n------------\n------------\n")
+    if not os.path.exists(no_txt_pdf_files):
+        with open(no_txt_pdf_files, "w") as file:
+            file.write("THESE FILES HAVE NO TXT AND CANNOT BE ANALYSED BY THE SCRIPT\n------------\n------------\n")
 
     if not os.path.exists(not_analysed_output_file):
         with open(not_analysed_output_file, "w") as file:
@@ -145,11 +155,11 @@ def scan_pdf_doc():
                                     pos_string = f"File: {pdf_file} - Page: {page_num} - Contains dirty word: {word}"
                                     with open(positive_output_file, "a") as file:
                                         file.write(pos_string + "\n")
-                                    break  # Move to the next word after finding the first dirty word
+                                    break
                     else:
                         print("This is a scanned Document")
                         string = f"File: {pdf_file}"
-                        with open(scanned_pdf_files, "a") as file:
+                        with open(no_txt_pdf_files, "a") as file:
                             file.write(string + "\n")
         except Exception as e:
             not_string = f"Error processing {pdf_file}: {e}"
@@ -159,8 +169,8 @@ def scan_pdf_doc():
     print("On to the next")
 
 def scan_powerpoint_doc():
-    positive_output_file = out_dir_Var.get() + "SCAN_RESULTS\\Positive_Powerpoint_Results.out"
-    not_analysed_output_file = out_dir_Var.get() + "SCAN_RESULTS\\Cannot_Anayse_Powerpoint_List.out"  
+    positive_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Positive_Powerpoint_Results.out"
+    not_analysed_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Cannot_Anayse_Powerpoint_List.out"  
     def find_powerpoint_files(directory):
         powerpoint_files = []
         for root, dirs, files in os.walk(directory):
@@ -212,11 +222,13 @@ def scan_powerpoint_doc():
             with open(not_analysed_output_file, "a") as file:
                 file.write(not_string + "\n")
 
+# Create error handling for scan_word_doc function
 def scan_word_doc():
     #script_loc = script_directory + "\\word_searcher.py"
     print("Scanning word docs")
     #user input variables from GUI
-    new_out_dir = out_dir_Var.get() + "\\RESULTS\\"
+    new_out_dir = out_dir_Var.get() + "\\SCAN_RESULTS\\Positive_Word_Results"
+    not_analysed_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Cannot_Anayse_Word_List"  
 
     # Function to search for Word files recursively in a directory
     def find_word_files(directory):
@@ -264,13 +276,109 @@ def scan_word_doc():
     print("finished scan")
 
 def scan_txt_doc():
-    script_loc = script_directory + "\\txt_searcher.py"
     print("scanning txt docs")
-    subprocess.run(["python", script_loc, DW_Var.get(), start_dir_Var.get(), out_dir_Var.get()])
-    print("On to the next")
+    positive_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Positive_TXT_Results.out"
+    not_analysed_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Cannot_Anayse_TXT_List.out"  
+    
+    def find_text_files(directory):
+        """
+        This function finds all text files (files with .txt extension)
+        within the specified directory and its subdirectories.
 
+        Args:
+            directory (str): Path to the directory to search.
+
+        Returns:
+            list: List containing the full paths to all text files found.
+        """
+        text_files = []
+        for root, dirs, files in os.walk(directory):
+            for file in files:
+                if file.lower().endswith('.txt'):
+                    text_files.append(os.path.join(root, file))
+        return text_files
+
+    # Create findings lists
+    #create output directories for results
+    if not os.path.exists(positive_output_file):
+        with open(positive_output_file, "w") as file:
+            file.write("THESE FILES HAVE ALL RETURNED A POSITIVE HIT\n------------\n------------\n")
+
+    if not os.path.exists(not_analysed_output_file):
+        with open(not_analysed_output_file, "w") as file:
+            file.write("THIS FILE WHERE NOT ABLE TO BE ANALYSED BY THE SCRIPT\n------------\n------------\n")
+
+
+    # Function to load dirty words from file
+    Dirty_words = []
+    with open(DW_Var.get(), 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            Dirty_words.append(line.strip())
+
+    # Specify directory path (consider user input or relative paths)
+
+    text_files = find_text_files(start_dir_Var.get())
+
+    # Dictionary to store findings for summary
+    findings_summary = defaultdict(lambda: defaultdict(int))
+
+    def read_file(file_path):
+        """
+        Attempt to read a file with multiple encodings.
+        
+        Args:
+            file_path (str): Path to the file to read.
+
+        Returns:
+            str: Decoded file content, or None if decoding fails.
+        """
+        encodings = ['utf-8', 'latin-1', 'ISO-8859-1']
+        for encoding in encodings:
+            try:
+                with open(file_path, 'r', encoding=encoding) as file:
+                    return file.read().lower()
+            except UnicodeDecodeError:
+                continue
+        return None
+
+    def process_text_file(file_path):
+        """
+        Process text files to find dirty words.
+
+        Args:
+            file_path (str): Path to the text file to process.
+        """
+        try:
+            file_text = read_file(file_path)
+            if file_text is None:
+                print(f"Error: Could not decode {file_path}")
+                return
+            for word in Dirty_words:
+                word_pattern = r'\b' + re.escape(word) + r'\b'
+                matches = re.findall(word_pattern, file_text)
+                if matches:
+                    pos_string = f"File: {file_path} - Text: {word} {len(matches)}"
+                    with open(positive_output_file, "a") as file:
+                        file.write(pos_string + "\n")
+        except FileNotFoundError:
+            neg_string = f"Error: File not found {file_path}"
+            with open(not_analysed_output_file, "a") as file:
+                file.write(neg_string + "\n")
+        except PermissionError:
+            neg_string = f"Permission error processing {file_path}"
+            with open(not_analysed_output_file, "a") as file:
+                file.write(neg_string + "\n")
+        except Exception as e:
+            neg_string = f"Unexpected error processing {file_path}: {e}"
+            with open(not_analysed_output_file, "a") as file:
+                file.write(neg_string + "\n")
+
+    for text_file in text_files:
+        process_text_file(text_file)
+        
 def find_all_other_files():
-    positive_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\"
+    positive_output_file = out_dir_Var.get() + "\\SCAN_RESULTS\\Other_Files"
     start_dir = start_dir_Var.get()
     print("finding all other files")
     # Lists for all the file types
@@ -285,15 +393,14 @@ def find_all_other_files():
     "mov": [],
     "msg": []
     }
-
+     # Create directory for the otherfiles output
+    if not os.path.exists(positive_output_file):
+        os.mkdir(positive_output_file)
+    
     interesting_extensions = [".jpeg", ".png", ".bmp", ".tiff", ".mp3", ".mp4", ".avi", ".mov", ".msg"]
     
     for i in interesting_extensions:
-        #positive_output_file = positive_output_file + i + "_Files_Found.out"
         targer_array = i.replace(".", "")
-        #if not os.path.exists(positive_output_file):
-            #with open(positive_output_file, "w") as file:
-                #file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
         for root, dirs, files in os.walk(start_dir):
             for file in files:
                 if file.lower().endswith(i):
@@ -301,7 +408,7 @@ def find_all_other_files():
                     list_of_lists[targer_array].append(file_found)
 
     if len(list_of_lists["jpeg"]) > 1:
-        file_list = positive_output_file + "jpegs_found.out"
+        file_list = positive_output_file + "\\jpegs_found.out"
         if not os.path.exists(file_list):
             with open(file_list, "w") as file:
                 file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
@@ -311,7 +418,7 @@ def find_all_other_files():
                     file.write(i + "\n")
 
     if len(list_of_lists["png"]) > 1:
-        file_list = positive_output_file + "png_found.out"
+        file_list = positive_output_file + "\\png_found.out"
         if not os.path.exists(file_list):
             with open(file_list, "w") as file:
                 file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
@@ -321,7 +428,7 @@ def find_all_other_files():
                     file.write(i + "\n")
 
     if len(list_of_lists["bmp"]) > 1:
-        file_list = positive_output_file + "bmp_found.out"
+        file_list = positive_output_file + "\\bmp_found.out"
         if not os.path.exists(file_list):
             with open(file_list, "w") as file:
                 file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
@@ -331,7 +438,7 @@ def find_all_other_files():
                     file.write(i + "\n")
     
     if len(list_of_lists["tiff"]) > 1:
-        file_list = positive_output_file + "tiff_found.out"
+        file_list = positive_output_file + "\\tiff_found.out"
         if not os.path.exists(file_list):
             with open(file_list, "w") as file:
                 file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
@@ -341,7 +448,7 @@ def find_all_other_files():
                     file.write(i + "\n")
 
     if len(list_of_lists["mp3"]) > 1:
-        file_list = positive_output_file + "mp3_found.out"
+        file_list = positive_output_file + "\\mp3_found.out"
         if not os.path.exists(file_list):
             with open(file_list, "w") as file:
                 file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
@@ -351,7 +458,7 @@ def find_all_other_files():
                     file.write(i + "\n")
     
     if len(list_of_lists["mp4"]) > 1:
-        file_list = positive_output_file + "mp4_found.out"
+        file_list = positive_output_file + "\\mp4_found.out"
         if not os.path.exists(file_list):
             with open(file_list, "w") as file:
                 file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
@@ -361,7 +468,7 @@ def find_all_other_files():
                     file.write(i + "\n")
     
     if len(list_of_lists["avi"]) > 1:
-        file_list = positive_output_file + "avi_found.out"
+        file_list = positive_output_file + "\\avi_found.out"
         if not os.path.exists(file_list):
             with open(file_list, "w") as file:
                 file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
@@ -371,7 +478,7 @@ def find_all_other_files():
                     file.write(i + "\n")
 
     if len(list_of_lists["mov"]) > 1:
-        file_list = positive_output_file + "mov_found.out"
+        file_list = positive_output_file + "\\mov_found.out"
         if not os.path.exists(file_list):
             with open(file_list, "w") as file:
                 file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
@@ -381,7 +488,7 @@ def find_all_other_files():
                     file.write(i + "\n")
     
     if len(list_of_lists["msg"]) > 1:
-        file_list = positive_output_file + "msg_found.out"
+        file_list = positive_output_file + "\\msg_found.out"
         if not os.path.exists(file_list):
             with open(file_list, "w") as file:
                 file.write("THESE FILES HAVE BEEN FOUND\n------------\n------------\n")
@@ -394,6 +501,9 @@ def find_all_other_files():
 
 # Functions from GUI Buttons
 def search_files():
+    output_dir = out_dir_Var.get() + "\\SCAN_RESULTS"
+    if not os.path.exists(output_dir):
+        os.mkdir(output_dir)
     # Ensure the files and Dirs entered by user are going to work
     if All_Document_Type_Button_Val.get() == 1:
         print("Scanning all docs")
@@ -422,9 +532,11 @@ def search_files():
         if All_Other_Type_Button_Val.get() == 1:
             find_all_other_files()
 
+    tkinter.messagebox.showinfo(title="Status", message="Files have been analysed")
+
 # Validate user selections and inputs 
 def check_checkboxes():
-    if All_Document_Type_Button_Val.get() == 0 and PDF_Button_Val.get() == 0 and PowerPoint_Button_Val.get() == 0 and Doc_Button_Val.get() == 0 and TXT_Button_Val.get() == 0 and Excel_Button_Val.get() == 0:
+    if All_Document_Type_Button_Val.get() == 0 and PDF_Button_Val.get() == 0 and PowerPoint_Button_Val.get() == 0 and Doc_Button_Val.get() == 0 and TXT_Button_Val.get() == 0 and Excel_Button_Val.get() == 0 and All_Other_Type_Button_Val.get == 0:
         messagebox.showerror("Checkbox Status", "please check at least one checkbox")
         main_screen()
     else:
