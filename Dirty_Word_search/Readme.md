@@ -1,15 +1,15 @@
 # Overview
-This is a dirty word searcher that can be run over file system and identifies key ords that reside in documentation
+This is a dirty word searcher that scans the file system and identifies specified words in documentation.
 
-## File types
-pdf
-ppt
-doc
-xls
+## File Types
+- PDF
+- PowerPoint (PPT)
+- Word Documents (DOC)
+- Excel Spreadsheets (XLS)
 
 ## Todo List
 
-1. get a list of files with full file paths for the following file types (output values to a txt doc):
+1. Get a list of files with full file paths for the following file types (output values to a text document):
 
 - JPEG
 - PNG
@@ -21,4 +21,4 @@ xls
 - MOV
 - MSG
 
-2. hope when we put it all together it doesnt fall over ;)
+2. Hope when we put it all together, it doesn't fall over! ;)
