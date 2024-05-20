@@ -276,7 +276,7 @@ def scan_powerpoint_doc():
     with open(DW_Var.get(), 'r') as file:
         lines = file.readlines()
         for line in lines:
-            Dirty_words.append(line.strip())
+            Dirty_words.append(line.strip().lower())
 
     powerpoint_files = find_powerpoint_files(start_dir_Var.get())
 
@@ -289,31 +289,48 @@ def scan_powerpoint_doc():
         with open(not_analysed_output_file, "w") as file:
             file.write("THIS FILE WHERE NOT ABLE TO BE ANALYSED BY THE SCRIPT\n------------\n------------\n")
 
+    # Dictionary to store findings for summary
+    findings_summary = defaultdict(lambda: defaultdict(int))
+
     for powerpoint_file in powerpoint_files:
         try:
             prs = Presentation(powerpoint_file)
-            for word in Dirty_words:
-                for slide in prs.slides:
-                    for shape in slide.shapes:
-                        if hasattr(shape, "text"):
-                            shape_text = shape.text.lower()
-                            dw = word.lower()
-                            if dw in shape_text and dw.len() == shape_text.len():
-                                pos_string = f"File: {powerpoint_file} - Contains dirty word: {word}"
-                                with open(positive_output_file, "a") as file:
-                                    file.write(pos_string + "\n")
-                                break
-        except PermissionError as e:
-            if 'Package not found' not in str(e):
-                not_string = f"Insufficient system privileges to read contents of {powerpoint_file}"
-                with open(not_analysed_output_file, "a") as file:
-                    file.write(not_string + "\n")
-        except PackageNotFoundError as e:
-            pass  
+
+            for slide in prs.slides:
+                # Process slide shapes
+                for shape in slide.shapes:
+                    if hasattr(shape, "text_frame") and shape.text_frame:
+                        shape_text = shape.text_frame.text.lower()
+
+                        # Check for each dirty word using regular expressions for word boundaries
+                        for word in Dirty_words:
+                            word_pattern = r'\b' + re.escape(word) + r'\b'
+                            matches = re.findall(word_pattern, shape_text)
+                            if matches:
+                                findings_summary[(powerpoint_file, 'Slide Text')][word] += len(matches)
+
+                # Process slide notes
+                if slide.has_notes_slide:
+                    notes_text = slide.notes_slide.notes_text_frame.text.lower()
+                    for word in Dirty_words:
+                        word_pattern = r'\b' + re.escape(word) + r'\b'
+                        matches = re.findall(word_pattern, notes_text)
+                        if matches:
+                            findings_summary[(powerpoint_file, 'Presenter Notes')][word] += len(matches)
+
+        except PermissionError:
+            print(f"Insufficient system privileges to read contents of {powerpoint_file}")
+        except PackageNotFoundError:
+            print(f"Insufficient system privileges to read contents of {powerpoint_file}")
         except Exception as e:
-            not_string = f"Error processing {powerpoint_file}: {e}"
-            with open(not_analysed_output_file, "a") as file:
-                file.write(not_string + "\n")
+            print(f"Error processing {powerpoint_file}: {e}")
+
+    # Print summary of findings
+    for (file, source), words in findings_summary.items():
+        words_summary = ', '.join([f"{word}: {count}" for word, count in words.items()])
+        pos_strings = f"File: {file} - {source} - Contains dirty words - {words_summary}"
+        with open(positive_output_file, "a") as file:
+            file.write(pos_strings + "\n")
 
 # Create error handling for scan_word_doc function
 def scan_word_doc():
