@@ -348,14 +348,15 @@ def scan_txt_doc():
         try:
             file_text = read_file(file_path)
             if file_text is None:
-                print(f"Error: Could not decode {file_path}")
+                neg_string = f"Error: Could not decode {file_path}"
+                with open(not_analysed_output_file, "a") as file:
+                    file.write(neg_string + "\n")
                 return
             for word in Dirty_words:
                 word_pattern = r'\b' + re.escape(word) + r'\b'
                 matches = re.findall(word_pattern, file_text)
                 if matches:
                     findings_summary[(file_path, 'Text')][word] += len(matches)
-                print(matches)
         except FileNotFoundError:
             neg_string = f"Error: File not found {file_path}"
             with open(not_analysed_output_file, "a") as file:
