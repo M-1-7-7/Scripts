@@ -1,65 +1,111 @@
 import os
-import sys
+import re
+from collections import defaultdict
 
-# Function to search for text files recursively in a directory
-class txt_finder():
-    #user input variables from GUI
-    dirty_words_txt = sys.argv[1]
-    input_directory = sys.argv[2]
-    output_directory = sys.argv[3]
-    positive_output_file = output_directory + "Positive_TXT_Results.txt"
-    not_analysed_output_file = output_directory + "Cannot_Anayse_TXT_List.txt"  
+# Function to find text files
+def find_text_files(directory):
+    """
+    This function finds all text files (files with .txt extension)
+    within the specified directory and its subdirectories.
 
-    def find_text_files(directory):
-        text_files = []
-        for root, dirs, files in os.walk(directory):
-            for file in files:
-                if file.lower().endswith('.txt'):
-                    text_files.append(os.path.join(root, file))
-        return text_files
+    Args:
+        directory (str): Path to the directory to search.
 
-    # Function to load dirty words from file
-    def load_dirty_words(file_path):
-        dirty_words = []
-        with open(file_path, 'r', encoding='utf-8') as file:  # Specify the encoding here
+    Returns:
+        list: List containing the full paths to all text files found.
+    """
+    text_files = []
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if file.lower().endswith('.txt'):
+                text_files.append(os.path.join(root, file))
+    return text_files
+
+# Function to load dirty words from file
+def load_dirty_words(filename):
+    """
+    This function loads dirty words from a text file, removing any leading/trailing spaces
+    and handling empty lines or an empty file gracefully.
+
+    Args:
+        filename (str): Path to the text file containing dirty words.
+
+    Returns:
+        list: List of cleaned dirty words (no leading/trailing spaces) or an empty list
+              if the file is empty or contains only empty lines.
+    """
+    dirty_words = []
+    try:
+        with open(filename, 'r') as file:
             for line in file:
-                dirty_words.append(line.strip())
-        return dirty_words
+                # Remove leading/trailing spaces and add to list (if not empty)
+                cleaned_word = line.strip()
+                if cleaned_word:
+                    dirty_words.append(cleaned_word.lower())
+    except FileNotFoundError:
+        print("Error: 'Dirty_word.txt' not found. Please ensure the file exists.")
+    return dirty_words
 
-    # Search for text files on the entire computer
-    text_files = find_text_files(input_directory)
+# Load Dirty Words file
+dirty_words = load_dirty_words('Dirty_word.txt')
+if not dirty_words:
+    print("Warning: 'Dirty_word.txt' is empty or contains only empty lines. No dirty words found.")
 
-    # Load dirty words from file
-    dirty_words = load_dirty_words(dirty_words_txt)
+# Specify directory path (consider user input or relative paths)
+computer_root = "C:\\"  # Replace with desired directory
 
-    #create output directories for results
-    if not os.path.exists(positive_output_file):
-        with open(positive_output_file, "w") as file:
-            file.write("THESE FILES HAVE ALL RETURNED A POSITIVE HIT\n------------\n------------\n")
+text_files = find_text_files(computer_root)
 
-    if not os.path.exists(not_analysed_output_file):
-        with open(not_analysed_output_file, "w") as file:
-            file.write("THIS FILE WHERE NOT ABLE TO BE ANALYSED BY THE SCRIPT\n------------\n------------\n")
+# Dictionary to store findings for summary
+findings_summary = defaultdict(lambda: defaultdict(int))
 
-    # Perform search in text files
-    for text_file in text_files:
+def read_file(file_path):
+    """
+    Attempt to read a file with multiple encodings.
+    
+    Args:
+        file_path (str): Path to the file to read.
+
+    Returns:
+        str: Decoded file content, or None if decoding fails.
+    """
+    encodings = ['utf-8', 'latin-1', 'ISO-8859-1']
+    for encoding in encodings:
         try:
-            with open(text_file, 'r', encoding='utf-8') as file:  # Specify the encoding here
-                for line_num, line in enumerate(file, start=1):
-                    words_in_line = line.strip().split()
-                    for word in dirty_words:
-                        # Check if word matches exactly the length specified
-                        if any(len(word) == len(w) and word.lower() == w.lower() for w in words_in_line):
-                            pos_string = f"File: {text_file} - Line: {line_num} - Contains dirty word: {word}"
-                            #print(f"File: {pdf_file} - Page: {page_num} - Contains dirty word: {word}")
-                            with open(positive_output_file, "a") as file:
-                                file.write(pos_string + "\n")
-                            print()
-        except Exception as e:
-            not_string = f"Error processing {text_file}: {e}"
-            with open(not_analysed_output_file, "a") as file:
-                file.write(not_string + "\n")
-            
+            with open(file_path, 'r', encoding=encoding) as file:
+                return file.read().lower()
+        except UnicodeDecodeError:
+            continue
+    return None
 
-while __name__ == "__main__":
-    txt_finder()
+def process_text_file(file_path):
+    """
+    Process text files to find dirty words.
+
+    Args:
+        file_path (str): Path to the text file to process.
+    """
+    try:
+        file_text = read_file(file_path)
+        if file_text is None:
+            print(f"Error: Could not decode {file_path}")
+            return
+        for word in dirty_words:
+            word_pattern = r'\b' + re.escape(word) + r'\b'
+            matches = re.findall(word_pattern, file_text)
+            if matches:
+                findings_summary[(file_path, 'Text')][word] += len(matches)
+    except FileNotFoundError:
+        print(f"Error: File not found {file_path}")
+    except PermissionError:
+        print(f"Permission error processing {file_path}")
+    except Exception as e:
+        print(f"Unexpected error processing {file_path}: {e}")
+
+for text_file in text_files:
+    process_text_file(text_file)
+
+# Print summary of findings
+for (file, source), words in findings_summary.items():
+    words_summary = ', '.join([f"{word}: {count}" for word, count in words.items()])
+    print(f"File: {file} - {source} - Contains dirty words - {words_summary}")
