@@ -2,12 +2,12 @@ import PyPDF2
 import os
 import openpyxl
 import re
-import xlrd
-
+ 
 import tkinter
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
+from tkinter import filedialog
 
 from spire.doc import *
 from spire.doc.common import *
@@ -49,6 +49,8 @@ def scan_all_docs():
     find_all_other_files()
 
 def scan_excel_doc():
+    print("SCANNING XLS...")
+
     global out_dir_Var_stripped
     global start_dir_Var_stripped
     global Dirty_words
@@ -176,6 +178,7 @@ def scan_excel_doc():
             file.write(pos_strings + "\n")
 
 def scan_pdf_doc():
+    print("SCANNING PDF...")
     global out_dir_Var_stripped
     global start_dir_Var_stripped   
     global Dirty_words
@@ -265,6 +268,8 @@ def scan_pdf_doc():
             file.write(pos_strings + "\n")
     
 def scan_powerpoint_doc():
+    print("SCANNING PPT...")
+
     global out_dir_Var_stripped
     global start_dir_Var_stripped 
     global Dirty_words
@@ -341,6 +346,8 @@ def scan_powerpoint_doc():
 
 # Create error handling for scan_word_doc function
 def scan_word_doc():
+    print("SCANNING DOC...")
+
     global out_dir_Var_stripped
     global start_dir_Var_stripped 
     global Dirty_words
@@ -386,6 +393,8 @@ def scan_word_doc():
         document.Close()
 
 def scan_txt_doc():
+    print("SCANNING TXT...")
+
     global out_dir_Var_stripped
     global start_dir_Var_stripped 
     global Dirty_words
@@ -490,6 +499,8 @@ def scan_txt_doc():
                         file.write(pos_strings + "\n")
 
 def find_all_other_files():
+    print("SCANNING OTHER...")
+
     global out_dir_Var_stripped
     global start_dir_Var_stripped
 
@@ -698,7 +709,7 @@ def check_user_input():
     else:
         check_checkboxes()
 
-#reset values on the window
+# Reset values on the window
 def reset_values():
     DW_Var.set("")
     start_dir_Var.set("")
@@ -709,6 +720,22 @@ def reset_values():
     Doc_Button_Val.set(0) 
     TXT_Button_Val.set(0) 
     All_Document_Type_Button_Val.set(0) 
+
+# User file explorer windows
+def open_file_dialog():
+    file_path = filedialog.askopenfilename()
+    if file_path:
+        DW_Var.set(file_path)
+
+def open_start_dir_dialog():
+    directory_path = filedialog.askdirectory()
+    if directory_path:
+        start_dir_Var.set(directory_path)
+
+def open_out_dir_dialog():
+    directory_path = filedialog.askdirectory()
+    if directory_path:
+        out_dir_Var.set(directory_path)
 
 # Main Screen
 def main_screen():
@@ -723,6 +750,9 @@ def main_screen():
     # Radio Buttons for file types
 
     # Function Buttons
+    find_dirtywords_file = ttk.Button(frm, text="Browse for dirtywords txt file", command=open_file_dialog)
+    find_starting_dir = ttk.Button(frm, text="Browse for starting directory", command=open_start_dir_dialog)
+    find_out_dir = ttk.Button(frm, text="Browse for output directory", command=open_out_dir_dialog)
     search_btn = ttk.Button(frm, text="Search", command=check_user_input)
     reset_btn = ttk.Button(frm, text="Reset", command=reset_values)
     quit_btn = ttk.Button(frm, text="Quit", command=root.destroy)
@@ -768,7 +798,7 @@ def main_screen():
                         offvalue = 0, 
                         height = 2, 
                         width = 20) 
-    All_Other_Type_Button = Checkbutton(root, text = "All Other Types", 
+    All_Other_Type_Button = Checkbutton(root, text = "Other Types", 
                         variable = All_Other_Type_Button_Val, 
                         onvalue = 1, 
                         offvalue = 0, 
@@ -781,10 +811,13 @@ def main_screen():
 
     DW_label.grid(column=0, row=3, sticky=E)
     DW_entry.grid(column=1, row=3, columnspan=4)
+    find_dirtywords_file.grid(column=5, row=3)
     start_dir_label.grid(column=0, row=4, sticky=E)
     start_dir_entry.grid(column=1, row=4, columnspan=4)
+    find_starting_dir.grid(column=5, row=4)
     out_dir_label.grid(column=0, row=5, sticky=E)
     out_dir_entry.grid(column=1, row=5, columnspan=4)
+    find_out_dir.grid(column=5, row=5)
     
     All_Excel_Button.grid(row=2, sticky=W)
     All_PDF_Button.grid(row=3, sticky=W)
@@ -794,9 +827,9 @@ def main_screen():
     All_Other_Type_Button.grid(row=7, sticky=W)
     All_Documet_Type_Button.grid(row=8, sticky=W)
 
-    search_btn.grid(column=8, row=10)
-    reset_btn.grid(column=9, row=10)
-    quit_btn.grid(column=10, row=10)
+    search_btn.grid(column=1, row=10)
+    reset_btn.grid(column=2, row=10)
+    quit_btn.grid(column=3, row=10)
 
     root.mainloop()
 
