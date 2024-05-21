@@ -48,7 +48,6 @@ def scan_all_docs():
     scan_txt_doc()
     find_all_other_files()
 
-# UPDATE THIS ONES
 def scan_excel_doc():
     global out_dir_Var_stripped
     global start_dir_Var_stripped
