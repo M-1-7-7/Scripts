@@ -33,8 +33,6 @@ Doc_Button_Val = IntVar()
 TXT_Button_Val = IntVar() 
 All_Other_Type_Button_Val = IntVar()
 All_Document_Type_Button_Val = IntVar() 
-# Other variables
-script_directory = os.path.dirname(os.path.abspath(__file__)) 
 # Global variables
 global DW_Var_stripped
 global out_dir_Var_stripped
@@ -56,8 +54,8 @@ def scan_excel_doc():
     global start_dir_Var_stripped
     global Dirty_words
 
-    positive_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Positive_Excel_Results.out"
-    not_analysed_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Cannot_Anayse_Excel_List.out"  
+    positive_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Excel_Positive_Results.out"
+    not_analysed_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Excel_Cannot_Anayse_List.out"  
     
     # Function to search for Excel files recursively in a directory
     def find_excel_files(directory):
@@ -93,10 +91,14 @@ def scan_excel_doc():
         try:
             workbook = openpyxl.load_workbook(file_path, data_only=True)
         except openpyxl.utils.exceptions.InvalidFileException:
-            print(f"Error: Invalid .xlsx file {file_path}")
+            error_string = f"Error: Invalid .xlsx file {file_path}"
+            with open(not_analysed_output_file, "a") as file:
+                file.write(error_string + "\n")
             return
         except Exception as e:
-            print(f"Error opening .xlsx file {file_path}: {e}")
+            error_string = f"Error opening .xlsx file {file_path}: {e}"
+            with open(not_analysed_output_file, "a") as file:
+                file.write(error_string + "\n")
             return
 
         for sheet in workbook.sheetnames:
@@ -128,12 +130,16 @@ def scan_excel_doc():
             file_path (str): Path to the .xls file to process.
         """
         try:
-            workbook = xlrd.open_workbook(file_path)
-        except xlrd.biffh.XLRDError:
-            print(f"Error: Invalid .xls file {file_path}")
+            workbook = openpyxl.load_workbook(file_path, data_only=True)
+        except openpyxl.utils.exceptions.InvalidFileException:
+            error_string = f"Error: Invalid .xls file {file_path}"
+            with open(not_analysed_output_file, "a") as file:
+                file.write(error_string + "\n")
             return
         except Exception as e:
-            print(f"Error opening .xls file {file_path}: {e}")
+            error_string = f"Error opening .xls file {file_path}: {e}"
+            with open(not_analysed_output_file, "a") as file:
+                file.write(error_string + "\n")
             return
 
         for sheet in workbook.sheets():
@@ -155,9 +161,13 @@ def scan_excel_doc():
             elif excel_file.lower().endswith('.xls'):
                 process_xls(excel_file)
         except PermissionError:
-            print(f"Permission error processing {excel_file}")
+            error_string = f"Permission error processing {excel_file}"
+            with open(not_analysed_output_file, "a") as file:
+                file.write(error_string + "\n")
         except Exception as e:
-            print(f"Unexpected error processing {excel_file}: {e}")
+            error_string = f"Unexpected error processing {excel_file}: {e}"
+            with open(not_analysed_output_file, "a") as file:
+                file.write(error_string + "\n")
 
     # Print summary of findings
     for (file, source), words in findings_summary.items():
@@ -171,9 +181,9 @@ def scan_pdf_doc():
     global start_dir_Var_stripped   
     global Dirty_words
 
-    positive_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Positive_PDF_Results.out"
-    no_txt_pdf_files = out_dir_Var_stripped + "\\SCAN_RESULTS\\pdf_files_without_text.out"
-    not_analysed_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Cannot_Anayse_PDF_List.out"  
+    positive_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\PDF_Positive_Results.out"
+    no_txt_pdf_files = out_dir_Var_stripped + "\\SCAN_RESULTS\\PDF_files_without_text.out"
+    not_analysed_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\PDF_Cannot_Anayse_List.out"  
 
     findings_summary = defaultdict(lambda: defaultdict(int))
 
@@ -234,14 +244,13 @@ def scan_pdf_doc():
                                 if matches:
                                     findings_summary[(file_path, 'Text')][word] += len(matches)
                     else:
-                        print("This is a scanned Document")
-                        string = f"File: {pdf_file}"
+                        error_string = f"This file containes no readable text, File: {pdf_file}"
                         with open(no_txt_pdf_files, "a") as file:
-                            file.write(string + "\n")
+                            file.write(error_string + "\n")
         except Exception as e:
-            not_string = f"Error processing {pdf_file}: {e}"
+            error_string = f"Error processing {pdf_file}: {e}"
             with open(not_analysed_output_file, "a") as file:
-                file.write(not_string + "\n")
+                file.write(error_string + "\n")
 
     # Search for PDF files on the entire computer
     pdf_files = find_pdf_files(start_dir_Var_stripped)
@@ -261,8 +270,8 @@ def scan_powerpoint_doc():
     global start_dir_Var_stripped 
     global Dirty_words
 
-    positive_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Positive_Powerpoint_Results.out"
-    not_analysed_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Cannot_Anayse_Powerpoint_List.out"  
+    positive_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Powerpoint_Positive_Results.out"
+    not_analysed_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Powerpoint_Cannot_Anayse_List.out"  
 
     def find_powerpoint_files(directory):
         powerpoint_files = []
@@ -295,7 +304,6 @@ def scan_powerpoint_doc():
                 for shape in slide.shapes:
                     if hasattr(shape, "text_frame") and shape.text_frame:
                         shape_text = shape.text_frame.text.lower()
-
                         # Check for each dirty word using regular expressions for word boundaries
                         for word in Dirty_words:
                             word_pattern = r'\b' + re.escape(word) + r'\b'
@@ -313,11 +321,17 @@ def scan_powerpoint_doc():
                             findings_summary[(powerpoint_file, 'Presenter Notes')][word] += len(matches)
 
         except PermissionError:
-            print(f"Insufficient system privileges to read contents of {powerpoint_file}")
-        except PackageNotFoundError:
-            print(f"Insufficient system privileges to read contents of {powerpoint_file}")
+            error_string = f"Insufficient system privileges to read contents of {powerpoint_file}"
+            with open(not_analysed_output_file, "a") as file:
+                file.write(error_string + "\n")
+        except PackageNotFoundError:            
+            error_string = f"Insufficient system privileges to read contents of {powerpoint_file}"
+            with open(not_analysed_output_file, "a") as file:
+                file.write(error_string + "\n")
         except Exception as e:
-            print(f"Error processing {powerpoint_file}: {e}")
+            error_string = f"Error processing {powerpoint_file}: {e}"
+            with open(not_analysed_output_file, "a") as file:
+                file.write(error_string + "\n")
 
     # Print summary of findings
     for (file, source), words in findings_summary.items():
@@ -333,7 +347,7 @@ def scan_word_doc():
     global Dirty_words
 
     #user input variables from GUI
-    new_out_dir = out_dir_Var_stripped + "\\SCAN_RESULTS\\Positive_Word_Results"
+    new_out_dir = out_dir_Var_stripped + "\\SCAN_RESULTS\\Word_Positive_Results"
     #not_analysed_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Cannot_Anayse_Word_List"  
     
     # Create Positive folder if it doesn't exist
@@ -371,15 +385,14 @@ def scan_word_doc():
                 document.SaveToFile(output_file)
         # Close the document
         document.Close()
-    print("finished scan")
 
 def scan_txt_doc():
     global out_dir_Var_stripped
     global start_dir_Var_stripped 
     global Dirty_words
 
-    positive_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Positive_TXT_Results.out"
-    not_analysed_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Cannot_Anayse_TXT_List.out"  
+    positive_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\TXT_Positive_Results.out"
+    not_analysed_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\TXT_Cannot_Anayse_List.out"  
     findings_summary = defaultdict(lambda: defaultdict(int))
 
     #create output directories/files for results
@@ -452,17 +465,17 @@ def scan_txt_doc():
                 if matches:
                     findings_summary[(file_path, 'Text')][word] += len(matches)
         except FileNotFoundError:
-            neg_string = f"Error: File not found {file_path}"
+            error_string = f"Error: File not found {file_path}"
             with open(not_analysed_output_file, "a") as file:
-                file.write(neg_string + "\n")
+                file.write(error_string + "\n")
         except PermissionError:
-            neg_string = f"Permission error processing {file_path}"
+            error_string = f"Permission error processing {file_path}"
             with open(not_analysed_output_file, "a") as file:
-                file.write(neg_string + "\n")
+                file.write(error_string + "\n")
         except Exception as e:
-            neg_string = f"Unexpected error processing {file_path}: {e}"
+            error_string = f"Unexpected error processing {file_path}: {e}"
             with open(not_analysed_output_file, "a") as file:
-                file.write(neg_string + "\n")
+                file.write(error_string + "\n")
 
     # start searching for txt files
     text_files = find_text_files(start_dir_Var_stripped)
@@ -482,7 +495,7 @@ def find_all_other_files():
     global start_dir_Var_stripped
 
     positive_output_file = out_dir_Var_stripped + "\\SCAN_RESULTS\\Other_Files"
-    print("finding all other files")
+
     # Lists for all the file types
     list_of_lists = {
     "jpeg": [], 
@@ -599,8 +612,6 @@ def find_all_other_files():
             with open(file_list, "a") as file:
                     file.write(i + "\n")
 
-    print("On to the next")
-
 # Functions from GUI Buttons
 def search_files():
     global DW_Var_stripped
@@ -618,7 +629,6 @@ def search_files():
         os.mkdir(output_dir)
     # Ensure the files and Dirs entered by user are going to work
     if All_Document_Type_Button_Val.get() == 1:
-        print("Scanning all docs")
         scan_all_docs()
 
     elif All_Document_Type_Button_Val.get() == 0:
@@ -669,18 +679,14 @@ def check_user_input():
     # check if directory exists
     if not os.path.exists(start_dir_Var_stripped):
         user_input_bad += "!!!Please enter a valid STARTING DIRECTORY!!!\n"
-    else:
-        print("starting directory is existing :)\n")
 
     if not os.path.exists(out_dir_Var_stripped):
         user_input_bad += "!!!Please enter a valid OUTPUT DIRECTORY!!!\n"
-    else:
-       print("Output directory is existing :)\n")
 
     # Check if the file is writable using os.access()
     if DW_Var_stripped.endswith('.txt'):
         if os.access(DW_Var_stripped, os.W_OK):
-            print(f"File '{DW_Var_stripped}' is writable.") 
+            print("LETS DO THIS")
         elif FileNotFoundError:
             user_input_bad += "!!!Dirty Word File NOT FOUND!!!\n"
         elif PermissionError:
@@ -695,7 +701,6 @@ def check_user_input():
 
 #reset values on the window
 def reset_values():
-    print("Resetting")
     DW_Var.set("")
     start_dir_Var.set("")
     out_dir_Var.set("")
