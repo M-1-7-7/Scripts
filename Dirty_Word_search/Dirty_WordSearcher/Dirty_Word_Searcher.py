@@ -2,8 +2,9 @@ import PyPDF2
 import os
 import openpyxl
 import re
- 
+import spire
 import tkinter
+
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -91,7 +92,7 @@ def scan_excel_doc():
         """
         try:
             workbook = openpyxl.load_workbook(file_path, data_only=True)
-        except openpyxl.utils.exceptions.InvalidFileException:
+        except openpyxl.utilsexceptions.InvalidFileException:
             error_string = f"Error: Invalid .xlsx file {file_path}"
             with open(not_analysed_output_file, "a") as file:
                 file.write(error_string + "\n")
@@ -374,23 +375,27 @@ def scan_word_doc():
     # Process each Word file
     for eachfile in word_files:
         # Create an object of the Document class
-        document = Document()
-        # Load a Word document
-        document.LoadFromFile(eachfile)
-        # Find all instances of specific text
-        for word in Dirty_words:
-            textSelections = document.FindAllString(word, False, True)
-            # Loop through all the instances
-            for selection in textSelections:
-                # Get the current instance as a single text range
-                textRange = selection.GetAsOneRange()
-                # Highlight the text range with a color
-                textRange.CharacterFormat.HighlightColor = Color.get_Yellow()
-                # Save the modified document
-                output_file = os.path.join(new_out_dir, "POSITIVE - " + os.path.basename(eachfile))
-                document.SaveToFile(output_file)
-        # Close the document
-        document.Close()
+        try:
+            document = Document()
+            # Load a Word document
+            document.LoadFromFile(eachfile)
+            # Find all instances of specific text
+            for word in Dirty_words:
+                textSelections = document.FindAllString(word, False, True)
+                # Loop through all the instances
+                for selection in textSelections:
+                    # Get the current instance as a single text range
+                    textRange = selection.GetAsOneRange()
+                    # Highlight the text range with a color
+                    textRange.CharacterFormat.HighlightColor = Color.get_Yellow()
+                    # Save the modified document
+                    output_file = os.path.join(new_out_dir, "POSITIVE - " + os.path.basename(eachfile))
+                    document.SaveToFile(output_file)
+            # Close the document
+            document.Close()
+
+        except spire.doc.common.SpireException:
+            print(f"{eachfile} is currently open, please close it and try again..")
 
 def scan_txt_doc():
     print("SCANNING TXT...")
@@ -635,6 +640,7 @@ def search_files():
             Dirty_words.append(line.strip().lower())
 
     output_dir = out_dir_Var_stripped + "\\SCAN_RESULTS"
+
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
     # Ensure the files and Dirs entered by user are going to work
@@ -659,7 +665,7 @@ def search_files():
 
         if All_Other_Type_Button_Val.get() == 1:
             find_all_other_files()
-
+    print(f"SCAN COMPLETE\nPlease see: {output_dir}")
     tkinter.messagebox.showinfo(title="Status", message="Files have been analysed")
 
 # Validate user selections and inputs 
