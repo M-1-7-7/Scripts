@@ -21,8 +21,8 @@ The Dirty Word Searcher is a script designed to scan files on your computer for 
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/M-1-7-7/Scripts/edit/main/Dirty_Word_search
-   cd dirty-word-searcher
+   git clone https://github.com/M-1-7-7/Scripts.git
+   cd Scripts/Dirty_Word_search/Dirty-Wordsearcher
 
 # Overview
 This is a word searcher that scans the file system and identifies specified words in documentation.
